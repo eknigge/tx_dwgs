@@ -1,0 +1,2 @@
+# Scripts
+The scripts folder contains Python scripts that were used to process data and create the .sql files used for analysis. These files are intended to be used in conjunction with the files in the data folder.

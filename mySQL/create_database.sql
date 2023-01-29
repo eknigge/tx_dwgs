@@ -69,4 +69,30 @@ CREATE TABLE IF NOT EXISTS `mydb`.`pole_drawings` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+-- -----------------------------------------------------
+-- Table `mydb`.`pole_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`pole_details` (
+  `pole_detail_id` INT NOT NULL,
+  `pole_stencil` VARCHAR(20) NULL,
+  `pole_location_id` INT NOT NULL,
+  `line_number` SMALLINT NOT NULL,
+  `height` INT NOT NULL,
+  `pole_class` VARCHAR(10) NULL,
+  `type_description` VARCHAR(50) NULL,
+  `construction_assembly` VARCHAR(15) NULL,
+  `phase_configuration` VARCHAR(6) NULL,
+  `manufacturer_date` DATE NULL,
+  `pole_material` VARCHAR(45) NULL,
+  `install_date` DATE NULL,
+  `pud_owned` TINYINT NULL,
+  `joint_presence` TINYINT NULL,
+  `catv_presence` TINYINT NULL,
+  `fiber_presence` TINYINT NULL,
+  `tel_presence` TINYINT NULL,
+  `cell_presence` TINYINT NULL,
+  `latitude` DOUBLE NOT NULL,
+  `longitude` DOUBLE NOT NULL,
+  PRIMARY KEY (`pole_detail_id`),
+  UNIQUE INDEX `pole_detail_id_UNIQUE` (`pole_detail_id` ASC) VISIBLE)
+ENGINE = InnoDB;

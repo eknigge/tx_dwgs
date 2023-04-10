@@ -9,6 +9,11 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
+  --header-background: #f5fff7;
+
+  --submit-btn: #57beeb;
+  --submit-btn-border: #009adb;
+
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
     #16abff33 0deg,
@@ -85,23 +90,115 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  /* background-color: var(--header-background); */
+  box-shadow: 0px 2px 5px;
 }
 
-a {
-  color: inherit;
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.icon {
+  font-size: 3rem;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.menu-icon {
+  align-self: flex-end;
+}
+
+.dropdown-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1.5rem;
+  background-color: rgb(202, 202, 202);
+  border-radius: 1rem;
+  padding: .5rem;
+}
+
+.dropdown-link:hover {
+  cursor: pointer;
+  background-color: rgb(170, 170, 170);
+  border-radius: .2rem;
+}
+
+.dropdown-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4rem;
+  color: black;
   text-decoration: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  padding-bottom: 1rem;
+  font-weight: normal;
+}
+
+.search-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.searchbar {
+  width: 90%;
+  max-width: 30rem;
+  height: 3rem;
+  border-radius: .75rem;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.submit-btn {
+  width: 10rem;
+  height: 2rem;
+  background-color: var(--submit-btn);
+  border-color: var(--submit-btn-border);
+  border-style: solid;
+  border-radius: .25rem;
+  font-size: 1rem;
+}
+
+.submit-btn:hover {
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .dropdown-icons {
+    flex-direction: row;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    /* color-scheme: dark; */
   }
 }

@@ -1,7 +1,7 @@
 # Database
 
 The MySQL database uses the following ERD, which is a modified version of the original data/database. Some of the fields in the original data were not important to this tool so they were not imported into the final table. 
-![database_img](../../mySQL/ERD.png 'database_img')
+![database_img](../../back-end/mySQL/ERD.png 'database_img')
 
 ## Creation
 The database can be created in MySQL, or other database software. The script files are contained in the MySQL folder and a brief description of each is given below. It is recommended to execute them in the order listed.

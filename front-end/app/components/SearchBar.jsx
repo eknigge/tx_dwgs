@@ -1,6 +1,5 @@
 'use client';
 import { useState } from "react";
-import ResultsTable from "./ResultsTable";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,10 +19,6 @@ const SearchBar = () => {
           placeholder="Search the database"
         />
         <button type="submit" className="submit-btn">Search</button>
-
-        <div>
-          <ResultsTable />
-        </div>
       </form>
     </>
   )

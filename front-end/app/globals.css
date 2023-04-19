@@ -194,7 +194,6 @@ body {
 
 .submit-btn:active {
   background-color: var(--submit-btn-press);
-  font-weight: bold;
 }
 
 .result-table-container {
@@ -206,7 +205,7 @@ body {
 }
 
 .results-table {
-  width: 80%;
+  width: 90%;
 }
 
 @media (min-width: 768px) {
@@ -215,8 +214,8 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
-    /* color-scheme: dark; */
+    color-scheme: dark;
   }
-}
+ } */

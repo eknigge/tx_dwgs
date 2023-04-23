@@ -1,6 +1,9 @@
 # Database
 
 The MySQL database uses the following ERD, which is a modified version of the original data/database. Some of the fields in the original data were not important to this tool so they were not imported into the final table. 
+
+The table pole_details is independent of the pole table due to its distinct values and information, and lacks a one-to-one relationship. Although they can be associated, the way the data was acquired has resulted in their segregation within the database.
+
 ![database_img](../../back-end/mySQL/ERD.png 'database_img')
 
 ## Creation

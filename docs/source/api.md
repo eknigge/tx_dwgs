@@ -9,19 +9,49 @@ We use conventional HTTP response codes to indicate the success or failure of an
 | 500 - Server Error | Server side errors                                                     |
 
 
+## Requests
+### POST
+```
+POST http://localhost:3000/
+```
+#### Body
+Name | Type | Description
+--- | --- | --- |
+query | *string*| user text query
+
+```
+{
+	"query": "string"
+}
+```
 ## Response Files
 Each response file represents query results as a JSON object array, with each object containing a column heading and its respective result. The following information provides a breakdown of the file contents.
 
 ### Transmission Drawings by Pole Stencil
+Name | Type 
+--- | --- |
+Dwg Name | *string*
+Title | *string*
+Revision No. | *int*
+Revision Date | *string*
+
+### Transmission Drawings by Line Number
+Name | Type 
+--- | --- |
+Pole Stencil | *string*
+
+
+### Transmission Poles by Line Number
+Name | Type 
+--- | --- |
+Dwg Name | *string*
+Title | *string*
+### Transmission Poles by Drawing Number (Incomplete)
+
+## Sample Files
+### Transmission Drawings by Pole Stencil
 [Download](../../back-end/sample_json/pole_stencil_result.json) the sample file. 
 
-#### Parameters
-**drawing_name** *string* <br> &emsp; is the name of the drawing and typically starts with "T" followed by the line number, a dash, and then the drawing number
-**drawing_title** *string* <br> &emsp; name of the drawing assigned by engineer and drafting departments
-**revision_number** *int* <br> &emsp;the number of revisions for a drawing
-**revision_date** *string* <br> &emsp; the date of the latest drawing revision
-
-#### Response
 ```
 [
 	{
@@ -32,14 +62,10 @@ Each response file represents query results as a JSON object array, with each ob
 	}
 ]
 ```
-
 ### Transmission Drawings by Line Number
 [Download](../../back-end/sample_json/poles_by_line_number_result.json) the sample file. 
 
-#### Parameters
-**pole_stencil** *string* <br> &emsp; pole stencil
-#### Response
-Response result has been truncated.
+Response result truncated.
 ```
 [
 	{
@@ -63,14 +89,10 @@ Response result has been truncated.
 ]
 
 ```
-
 ### Transmission Poles by Line Number
 [Download](../../back-end/sample_json/poles_by_line_number_result.json) the sample file. 
-#### Parameters
-**drawing_name** *string* <br> &emsp; is the name of the drawing and typically starts with "T" followed by the line number, a dash, and then the drawing number
-**drawing_title** *string* <br> &emsp; name of the drawing assigned by engineer and drafting departments
-#### Response
-Response result has been truncated.
+
+Response result truncated.
 ```
 [
 	{
@@ -94,13 +116,11 @@ Response result has been truncated.
 		"drawing_title" : "Structure SK-C 1/5 thru SK-C 1/8"
 	},
 ]
-
 ```
+
 ### Transmission Poles by Drawing Number
 [Download](../../back-end/sample_json/poles_by_drawing_number_result.json) the sample file. 
-#### Parameters
-**pole_stencil** *string* <br> &emsp; pole stencil
-#### Response
+
 ```
 [
 	{
@@ -140,4 +160,18 @@ Response result has been truncated.
 		"pole_stencil" : "SC-BW 5/2"
 	}
 ]
+```
+
+## Testing
+Making API calls in Python is straightforward. If you are working on your local machine, ensure that the Node.js and MySQL server are active. Run the script below, modifying the query parameter to experiment with various outputs.
+
+```
+import requests
+
+url = 'http://localhost:3000'
+data = {'query':'EA-O 3/3'}
+
+response = requests.post(url, json=data)
+
+print(response.json())
 ```

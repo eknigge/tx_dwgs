@@ -15,17 +15,15 @@ const SearchView = () => {
   const cols = []
   // Pull column/field names
   function loadCols(input) {
-    let count = 0;
     for (const key in input[0]) {
       const col = {
-        key: count,
+        key: key,
         title: key,
         dataIndex: key,
         sorter: {
           compare: (a, b) => a.key.localeCompare(b.key)
         }
       }
-      count++
       cols.push(col)
     }
   }
@@ -62,8 +60,7 @@ const SearchView = () => {
         dataSource={data}
         columns={columns}
         scroll={{
-          x: 800,
-          // y: 800,
+          x: 1,
         }}
       />
       }

@@ -9,6 +9,8 @@ const Header = () => {
         src={logo}
         width={200}
         height={110}
+        alt="Snohomish PUD Logo"
+        priority
       />
       <Dropdown />
       <h1>Transmission Drawings</h1>

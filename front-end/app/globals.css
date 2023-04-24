@@ -11,8 +11,11 @@
 
   --header-background: #f5fff7;
 
+  --SnoPUD-logo-green: #009E77;
+
   --submit-btn: #57beeb;
   --submit-btn-border: #009adb;
+  --submit-btn-pressed: #1687b8;
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -156,7 +159,7 @@ body {
 .page-title {
   text-align: center;
   font-size: 2rem;
-  padding-bottom: 1rem;
+  margin-bottom: 2rem;
   font-weight: normal;
 }
 
@@ -166,7 +169,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .searchbar {
@@ -192,9 +195,61 @@ body {
   cursor: pointer;
 }
 
+.submit-btn:active {
+  background-color: var(--submit-btn-pressed);
+}
+
 .results-table {
   width: 90%;
 }
+
+.loader {
+  margin-top: 2rem;
+  width: 48px;
+  height: 48px;
+  border: 3px dotted var(--SnoPUD-logo-green);
+  border-style: solid solid dotted dotted;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+.loader::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px dotted var(--SnoPUD-logo-green);
+  border-style: solid solid dotted;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  animation: rotationBack 1s linear infinite;
+  transform-origin: center center;
+}
+    
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+} 
+
 
 @media (min-width: 768px) {
   .dropdown-icons {

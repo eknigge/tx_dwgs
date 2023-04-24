@@ -1,16 +1,46 @@
 'use client';
 import { Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchView = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState(null);
+  const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(searchTerm)
   };
+
+  const cols = []
+  // Pull column/field names
+  function loadCols(input) {
+    let count = 0;
+    for (const key in input[0]) {
+      const col = {
+        key: count,
+        title: key,
+        dataIndex: key,
+        sorter: {
+          compare: (a, b) => a.key.localeCompare(b.key)
+        }
+      }
+      count++
+      cols.push(col)
+    }
+  }
+
+  useEffect(() => {
+    fetch(`https://swapi.py4e.com/api/people/?search`)
+    .then(res => res.json())
+    .then(data => setData(data.results))
+    .catch(err => console.log(err.message));
+
+    if (data.length > 0) {
+      loadCols(data);
+      setColumns(cols);
+    }
+  }, [data]);
 
   return (
     <>
@@ -24,11 +54,20 @@ const SearchView = () => {
         <button type="submit" className="submit-btn">Search</button>
       </form>
 
-      <Table 
-        dataSource={results}
-        columns={columns}
+
+      {data.length === 0 ? 
+        <p>Loading</p> : 
+        <Table 
         className="results-table"
+        dataSource={data}
+        columns={columns}
+        scroll={{
+          x: 800,
+          // y: 800,
+        }}
       />
+      }
+      
     </>
   )
 };

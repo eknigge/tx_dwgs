@@ -1,0 +1,11 @@
+export default function (Background) {
+  return (
+    <Image
+        src={backgroundImage}
+        alt="Background Alternative"
+        layout="center" />
+  )
+}
+
+
+'/public/images/background1.jpg'

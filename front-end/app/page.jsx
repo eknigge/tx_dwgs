@@ -1,5 +1,6 @@
 import ResultsTable from "./components/ResultsTable"
 import SearchBar from "./components/SearchBar"
+import Background from "./components/Background"
 
 const HomePage = () => {
   return (
@@ -16,3 +17,5 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+//landing page

@@ -4,14 +4,9 @@ import { useState } from "react";
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSubmit = (e) => {
-    console.log(searchTerm);
-    e.preventDefault();
-  };
-
   return (
     <>
-      <form className="search-form" onSubmit={handleSubmit}>
+      <form className="search-form" action="">
         <input
           type="text"
           className="searchbar"

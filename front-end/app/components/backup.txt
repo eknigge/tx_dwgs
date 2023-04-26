@@ -1,11 +1,56 @@
-export default function (Background) {
+// resultsTable.jsx
+
+'use client'
+import { useState } from "react";
+import { Table } from "antd";
+
+import data1 from "../../../back-end/sample_json/drawings_by_line_number_result.json"
+import data2 from "../../../back-end/sample_json/poles_by_line_number_result.json"
+
+const ResultsTable = () => {
+  const [Data1, setData1] = useState(data1);
+  const [Data2, setData2] = useState(data2);
+  const columns1 = [
+    {
+      key: "name", 
+      title: "Drawing Namee", 
+      dataIndex: "drawing_name", 
+      sorter: {
+        compare: (a, b) => a.drawing_name.localeCompare(b.drawing_name)
+      },
+      filteredValue: [setData1], 
+      onFilter: (value, record) => {
+        return String(record.drawing_name)
+        .toLowerCase()
+        .includes(value.toLowerCase()) || 
+        String(record.drawing_name)
+        .toLowerCase()
+        .includes(value.toLowerCase());
+      }
+    },
+    {
+      key: "title", 
+      title: "Drawing Titlee", 
+      dataIndex: "drawing_title",
+      sorter: {
+        compare: (a, b) => a.drawing_title.localeCompare(b.drawing_title)
+      }
+    }
+  ]
+  const columns2 = [
+    {
+      key: "1", 
+      title: "Pole Stencil", 
+      dataIndex: "pole_stencil", 
+   
+    }
+  ]
   return (
-    <Image
-        src={backgroundImage}
-        alt="Background Alternative"
-        layout="center" />
+    <>
+      <Table dataSource={Data1} columns={columns1} className="results-table"/>
+      <Table dataSource={Data2} columns={columns2} className="results-table"/>
+    </>
   )
 }
 
-
-'/public/images/background1.jpg'
+export default ResultsTable;

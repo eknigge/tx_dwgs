@@ -91,6 +91,10 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background:linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2)), url('../public/images/background1.jpg');
+  background-position: center;
+  background-size: cover;
+  color: #496C57
 }
 
 .header {
@@ -100,6 +104,7 @@ body {
   padding-bottom: 1rem;
   /* background-color: var(--header-background); */
   box-shadow: 0px 2px 5px;
+  color: #496C57
 }
 
 .dropdown {
@@ -129,7 +134,8 @@ body {
   align-items: center;
   margin-top: 1rem;
   gap: 1.5rem;
-  background-color: rgb(202, 202, 202);
+  /*background-color: rgb(202, 202, 202);*/
+  background-color: #14A484;
   border-radius: 1rem;
   padding: .5rem;
 }
@@ -184,8 +190,9 @@ body {
 .submit-btn {
   width: 10rem;
   height: 2rem;
-  background-color: var(--submit-btn);
-  border-color: var(--submit-btn-border);
+  /*background-color: var(--submit-btn); */
+  background-color: #14A484;
+  /*border-color: var(--submit-btn-border);*/
   border-style: solid;
   border-radius: .25rem;
   font-size: 1rem;
@@ -257,8 +264,8 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
-    /* color-scheme: dark; */
+    color-scheme: dark;
   }
-}
+ } */

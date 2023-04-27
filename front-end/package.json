@@ -9,11 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "antd": "^5.4.2",
-=======
     "antd": "^5.4.5",
->>>>>>> 340d43d61175c83bddf4bea5211ba6fa6dc08092
     "next": "13.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

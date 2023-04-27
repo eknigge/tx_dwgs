@@ -15,11 +15,7 @@
 
   --submit-btn: #57beeb;
   --submit-btn-border: #009adb;
-<<<<<<< HEAD
-  --submit-btn-press: #0076a9;
-=======
   --submit-btn-pressed: #1687b8;
->>>>>>> 340d43d61175c83bddf4bea5211ba6fa6dc08092
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -200,27 +196,13 @@ body {
 }
 
 .submit-btn:active {
-<<<<<<< HEAD
-  background-color: var(--submit-btn-press);
-}
-
-.result-table-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 2rem;
-=======
   background-color: var(--submit-btn-pressed);
->>>>>>> 340d43d61175c83bddf4bea5211ba6fa6dc08092
 }
 
 .results-table {
   width: 90%;
 }
 
-<<<<<<< HEAD
-=======
 .loader {
   margin-top: 2rem;
   width: 48px;
@@ -269,7 +251,6 @@ body {
 } 
 
 
->>>>>>> 340d43d61175c83bddf4bea5211ba6fa6dc08092
 @media (min-width: 768px) {
   .dropdown-icons {
     flex-direction: row;

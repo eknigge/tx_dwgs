@@ -134,7 +134,8 @@ body {
   align-items: center;
   margin-top: 1rem;
   gap: 1.5rem;
-  background-color: rgb(202, 202, 202);
+  /*background-color: rgb(202, 202, 202);*/
+  background-color: #14A484;
   border-radius: 1rem;
   padding: .5rem;
 }
@@ -184,14 +185,14 @@ body {
   border-radius: .75rem;
   font-size: 1rem;
   padding: 1rem;
-  color: #496C57;
 }
 
 .submit-btn {
   width: 10rem;
   height: 2rem;
-  background-color: var(--submit-btn);
-  border-color: var(--submit-btn-border);
+  /*background-color: var(--submit-btn); */
+  background-color: #14A484;
+  /*border-color: var(--submit-btn-border);*/
   border-style: solid;
   border-radius: .25rem;
   font-size: 1rem;

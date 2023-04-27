@@ -1,6 +1,6 @@
 'use client';
 import { Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchView = () => {
   const [query, setQuery] = useState('');
@@ -12,17 +12,24 @@ const SearchView = () => {
     e.preventDefault();
     setLoading(true);
     console.log("Query: " + query)
+    // setTimeout()  //Enable to show loading spinner
+    loadData();
+    console.log(data);
+    
+    setLoading(false);
+  };
+
+  const loadData = () => {
     fetch(`http://localhost:3000/${query}`)
     .then(res => res.json())
     .then(data => setData(data))
     .catch(err => console.error('Error: ' + err.message));
-    console.log(data);
+
     if (data.length > 0) {
       loadCols(data);
       setColumns(cols);
     }
-    setLoading(false);
-  };
+  }
 
   // Pull column/field names
   const cols = []
@@ -30,13 +37,17 @@ const SearchView = () => {
     for (const key in input[0]) {
       const col = {
         key: key,
-        title: key,
+        title: key.replace(/_/g, " "),
         dataIndex: key,
         sorter: (a, b) => a.key.localeCompare(b.key)
       }
       cols.push(col)
     }
   }
+
+  // useEffect(() => {
+  //   handleSubmit;
+  // });
 
   return (
     <>

@@ -1,11 +1,11 @@
-import SearchBar from "./components/SearchBar"
+import SearchView from "./components/SearchView"
 
 const HomePage = () => {
   return (
     <>
       <div className="container">
         <h1 className="page-title">Database Search</h1>
-        <SearchBar />
+        <SearchView />
       </div>
     </>
   )

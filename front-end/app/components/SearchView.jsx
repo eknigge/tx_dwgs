@@ -37,7 +37,7 @@ const SearchView = () => {
     for (const key in input[0]) {
       const col = {
         key: key,
-        title: key.replace(/_/g, " "),
+        title: key.replace(/_/g, " ").toUpperCase(),
         dataIndex: key,
         sorter: (a, b) => a.key.localeCompare(b.key)
       }

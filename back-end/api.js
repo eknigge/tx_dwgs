@@ -9,28 +9,21 @@ const queries = require('./sqlQueries');
 let poleQuery = queries.poleQuery;
 let dwgQuery = queries.dwgQuery;
 let lineQuery = queries.lineQuery;
-let poleStencilDefault = "EA-O 3/3";
-let lineNumberDefault = "120";
-let dwgNameDefault = "T120-6";
 
 // regular expressions for query
-const rePole = /.*\d\/\d+/;
+const rePole = /\d\/\d+/;
 const reLine = /\d{3}/;
 const reDwg = /[tT].*/;
 
 function determineQuery(input) {
 	if (rePole.test(input)) {
-		poleStencilDefault = input
-		return poleQuery
+		return poleQuery(input)
 	} else if (reDwg.test(input)) {
-		dwgNameDefault = input
-		return dwgQuery
+		return dwgQuery(input)
 	} else if (reLine.test(input)) {
-		lineNumberDefault = input
-		return lineQuery
+		return lineQuery(input)
 	} else {
-		poleStencilDefault = input
-		return poleQuery
+		return poleQuery(input)
 	}
 }
 

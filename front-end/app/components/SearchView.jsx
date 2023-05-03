@@ -11,7 +11,7 @@ const SearchView = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Query: " + query)
+    console.log("query: " + query)
     // setTimeout()  //Enable to show loading spinner
     loadData();
     console.log(data);
@@ -20,7 +20,16 @@ const SearchView = () => {
   };
 
   const loadData = () => {
-    fetch(`http://localhost:3000/${query}`)
+    fetch(`http://localhost:3000/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: query,
+      }),
+      
+    })
     .then(res => res.json())
     .then(data => setData(data))
     .catch(err => console.error('Error: ' + err.message));

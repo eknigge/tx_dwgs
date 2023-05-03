@@ -15,12 +15,10 @@ const SearchView = () => {
     // setTimeout()  //Enable to show loading spinner
     loadData();
     console.log(data);
-    
-    setLoading(false);
   };
 
-  const loadData = () => {
-    fetch(`http://localhost:3000/`, {
+  const loadData = async () => {
+    await fetch(`http://localhost:3000/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +30,8 @@ const SearchView = () => {
     })
     .then(res => res.json())
     .then(data => setData(data))
-    .catch(err => console.error('Error: ' + err.message));
+    .catch(err => console.error('Error: ' + err.message))
+    .finally(setLoading(false));
 
     if (data.length > 0) {
       loadCols(data);

@@ -54,10 +54,6 @@ const SearchView = () => {
     }
   }
 
-  // useEffect(() => {
-  //   handleSubmit;
-  // });
-
   return (
     <>
       <form className="search-form" action="" onSubmit={handleSubmit}>
@@ -71,16 +67,17 @@ const SearchView = () => {
       </form>
 
 
-      {loading ? 
-        <span className="loader"></span> : 
-        <Table
-        className="results-table"
-        dataSource={data}
-        columns={columns}
-        scroll={{
-          x: 1,
-        }}
-      />
+      {data.length === 0 ? null: 
+        (loading ? <span className="loader"></span> : 
+          <Table
+            className="results-table"
+            dataSource={data}
+            columns={columns}
+            scroll={{
+              x: 1,
+            }}
+          />
+        )
       }
       
     </>

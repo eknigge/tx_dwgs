@@ -18,20 +18,33 @@ const SearchView = () => {
   };
 
   const loadData = async () => {
-    await fetch(`http://localhost:3000/`, {
-      method: "POST",
+    const response = await fetch ('http://localhost:3000', {
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: query,
-      }),
-      
+      })
     })
-    .then(res => res.json())
-    .then(data => setData(data))
-    .catch(err => console.error('Error: ' + err.message))
-    .finally(setLoading(false));
+    const data = await response.json()
+    setData(data)
+    setLoading(false)
+    
+  //   await fetch(`http://localhost:3000/`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       query: query,
+  //     }),
+      
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => setData(data))
+  //   .catch(err => console.error('Error: ' + err.message))
+  //   .finally(setLoading(false));
 
     if (data.length > 0) {
       loadCols(data);
@@ -45,7 +58,7 @@ const SearchView = () => {
     for (const key in input[0]) {
       const col = {
         key: key,
-        title: key.replace(/_/g, " ").toUpperCase(),
+        title: key.replace(/_/g, " "),
         dataIndex: key,
         sorter: (a, b) => a.key.localeCompare(b.key)
       }

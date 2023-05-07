@@ -210,6 +210,11 @@ body {
   width: 90%;
 }
 
+.results-not-found {
+  color: red;
+  font-size: 1.2rem;
+}
+
 .loader {
   margin-top: 2rem;
   width: 48px;

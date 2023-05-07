@@ -7,6 +7,7 @@ const SearchView = () => {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [noResultsFound, setNoResultsFound] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const SearchView = () => {
   };
 
   const loadData = async () => {
+    setNoResultsFound(false)
     const response = await fetch ('http://localhost:3000', {
       method: 'POST',
       headers: {
@@ -49,6 +51,8 @@ const SearchView = () => {
     if (data.length > 0) {
       loadCols(data);
       setColumns(cols);
+    } else {
+      setNoResultsFound(true)
     }
   }
 
@@ -78,6 +82,7 @@ const SearchView = () => {
         <button type="submit" className="submit-btn">Search</button>
       </form>
 
+      {noResultsFound ? <p className="results-not-found">No Results Found</p>: null}
 
       {data.length === 0 ? null: 
         (loading ? <span className="loader"></span> : 

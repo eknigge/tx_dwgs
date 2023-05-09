@@ -10,7 +10,33 @@ We use conventional HTTP response codes to indicate the success or failure of an
 
 
 ## Requests
-### POST
+### POST /admin
+```
+POST http://localhost:3000/admin
+```
+#### Body
+Name | Type | Description
+--- | --- | --- |
+query | *string*| user text query
+api_key | *string*| valid api key
+operation | *string*| "delete", "insert" (incomplete), or "update" (incomplete). Only one modify operation permitted 
+
+```
+{
+	"query": "string",
+	"api_key": "string",
+	"operation": "string 
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | Success
+400 | Bad API key
+
+
+### POST /
 ```
 POST http://localhost:3000/
 ```
@@ -24,10 +50,10 @@ query | *string*| user text query
 	"query": "string"
 }
 ```
-## Response Files
+#### Response 
 Each response file represents query results as a JSON object array, with each object containing a column heading and its respective result. The following information provides a breakdown of the file contents.
 
-### Transmission Drawings by Pole Stencil
+##### Transmission Drawings by Pole Stencil
 Name | Type 
 --- | --- |
 Dwg Name | *string*
@@ -35,18 +61,17 @@ Title | *string*
 Revision No. | *int*
 Revision Date | *string*
 
-### Transmission Drawings by Line Number
+##### Transmission Drawings by Line Number
 Name | Type 
 --- | --- |
 Pole Stencil | *string*
 
 
-### Transmission Poles by Line Number
+##### Transmission Poles by Line Number
 Name | Type 
 --- | --- |
 Dwg Name | *string*
 Title | *string*
-### Transmission Poles by Drawing Number (Incomplete)
 
 ## Sample Files
 ### Transmission Drawings by Pole Stencil
@@ -163,13 +188,29 @@ Response result truncated.
 ```
 
 ## Testing
-Making API calls in Python is straightforward. If you are working on your local machine, ensure that the Node.js and MySQL server are active. Run the script below, modifying the query parameter to experiment with various outputs.
+Making API calls in Python is straightforward. If you are working on your local machine, ensure that the Node.js and MySQL server are active. Run one of the scripts below, modifying the query parameter to experiment with various outputs.
 
+### POST /
 ```
 import requests
 
 url = 'http://localhost:3000'
 data = {'query':'EA-O 3/3'}
+
+response = requests.post(url, json=data)
+
+print(response.json())
+```
+### POST/admin
+```
+import requests
+
+url = 'http://localhost:3000'
+data = {
+    'query': 'CI 5/5',
+    'api_key': 'caphie7chai2yaengooghiv7OuThiepie4kah2ku',
+    'operation': 'delete'
+	}
 
 response = requests.post(url, json=data)
 

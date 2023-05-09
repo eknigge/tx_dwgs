@@ -69,5 +69,3 @@ INSERT INTO line(line_id, line_number, line_name, line_abbreviation) VALUES
 (83, 172, "HARTFORD-GRANITE FALLS", "H-GF"),
 (85, 173, "BEVERLY PARK-EVERETT", "BP-E"),
 (87, 125, "OLYMPIC TAP", "NA");
-
--- select * from line;

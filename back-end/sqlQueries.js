@@ -44,4 +44,73 @@ const dwgQuery =
 		`
 	}
 
-module.exports = { poleQuery, lineQuery, dwgQuery };
+// Validate API key query
+const apiKeyQuery =
+	function (input) {
+		return `
+		SELECT valid FROM api_key
+		JOIN user_api_key on api_key.api_key_id = user_api_key.api_key_id
+		JOIN user ON user.user_id = user_api_key.user_id
+		WHERE key_value = "${input}"; `
+	}
+
+// Delete pole by stencil 
+const deletePole = function (input) {
+	return `
+		DELETE FROM pole
+		WHERE pole_id IN 
+		(SELECT * FROM 
+			(SELECT pole_id FROM pole
+			WHERE pole_stencil = "${input}") 
+		tmpTable);`
+}
+
+// Delete drawing
+const deleteDwg = function (input) {
+	return `
+	DELETE FROM drawings
+	WHERE drawing_id IN 
+		(SELECT * FROM 
+			(SELECT drawing_id FROM drawings
+			WHERE drawing_name = "${input}")
+		tmpTable);`
+}
+
+// Delete Line
+const deleteLine = function (input) {
+	return `
+	DELETE FROM line
+	WHERE line_id IN
+		(SELECT * FROM 
+			(SELECT line_id FROM line
+			WHERE line_number = "${input}")
+		tmpTable);`
+}
+
+// Add logging event
+const addLogEvent = function (action) {
+	return `
+	INSERT INTO logging (date_time, action)
+	VALUES 
+		((SELECT NOW()), "${action}");
+	`
+}
+
+// Update user_logging table
+const updateUserLogging = function (apiKey) {
+	return `
+	INSERT INTO user_logging(log_id, user_id)
+	VALUES (
+		(SELECT max(log_id) FROM logging),
+		(SELECT user.user_id FROM api_key
+			JOIN user_api_key on api_key.api_key_id = user_api_key.api_key_id
+			JOIN user ON user.user_id = user_api_key.user_id
+			WHERE key_value = "${apiKey}")
+		);`
+}
+
+
+module.exports = {
+	poleQuery, lineQuery, dwgQuery, apiKeyQuery, deletePole,
+	deleteDwg, deleteLine, addLogEvent, updateUserLogging
+};

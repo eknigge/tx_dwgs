@@ -54,9 +54,13 @@ Ensure that the MySQL server is launched and confirm the existence of the `mydb`
 6. [linking_table_data_import](../../back-end/MySQL/linking_table_data_import.sql)
 
 From the command line start locate the back-end folder and start the Node.js server. 
-
 ```
 node api.js
+```
+
+For development, you may use the nodemon server command which automatically restarts the system whenever any changes are made.
+```
+nodemon api.js
 ```
 
 All systems should be operational now. To conduct test queries, please refer to the API page. If you are running it on your local machine, open your browser and visit `http://localhost:3000/` to view the outcome of a sample query.

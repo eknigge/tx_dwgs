@@ -7,6 +7,7 @@ const SearchView = () => {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [noResultsFound, setNoResultsFound] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -57,6 +58,7 @@ const SearchView = () => {
         <button type="submit" className="submit-btn">Search</button>
       </form>
 
+      {noResultsFound ? <p className="results-not-found">No Results Found</p>: null}
 
       {data.length === 0 ? null: 
         (loading ? <span className="loader"></span> : 

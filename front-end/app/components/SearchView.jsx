@@ -11,6 +11,7 @@ const SearchView = () => {
 
   const fetchData = async () => {
     setLoading(true);
+    setNoResultsFound(false);
     try {
       const response = await fetch('http://localhost:3000', {
         method: 'POST',
@@ -34,6 +35,8 @@ const SearchView = () => {
           sorter: (a, b) => a[key].localeCompare(b[key]),
         }));
         setColumns(dynamicColumns);
+      } else {
+        setNoResultsFound(true);
       }
     } catch (error) {
       console.error('Error fetching data:', error);

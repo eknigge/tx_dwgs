@@ -210,7 +210,7 @@ body {
   width: 90%;
 }
 
-.results-not-found {
+.warning-text {
   color: red;
   font-size: 1.2rem;
 }

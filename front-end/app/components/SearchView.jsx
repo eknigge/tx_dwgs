@@ -1,6 +1,6 @@
 'use client';
 import { Table } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const SearchView = () => {
   const [query, setQuery] = useState('');
@@ -8,10 +8,12 @@ const SearchView = () => {
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noResultsFound, setNoResultsFound] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchData = async () => {
-    setLoading(true);
     setNoResultsFound(false);
+    setError(false);
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:3000', {
         method: 'POST',
@@ -40,7 +42,9 @@ const SearchView = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      setData([]);
       setLoading(false);
+      setError(true);
     }
   };
 
@@ -61,7 +65,7 @@ const SearchView = () => {
         <button type="submit" className="submit-btn">Search</button>
       </form>
 
-      {noResultsFound ? <p className="results-not-found">No Results Found</p>: null}
+      {noResultsFound ? <p className="warning-text">No Results Found</p>: null}
 
       {data.length === 0 ? null: 
         (loading ? <span className="loader"></span> : 
@@ -80,6 +84,11 @@ const SearchView = () => {
             }}
           />
         )
+      }
+
+      {error ?
+        <p className="warning-text">Error fetching data, please try again.</p>
+        : null
       }
       
     </>

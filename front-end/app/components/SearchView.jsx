@@ -8,63 +8,42 @@ const SearchView = () => {
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const fetchData = async () => {
     setLoading(true);
-    console.log("query: " + query)
-    // setTimeout()  //Enable to show loading spinner
-    loadData();
-    console.log(data);
+    try {
+      const response = await fetch('http://localhost:3000', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query,
+        })
+      });
+      const jsonData = await response.json();
+      setData(jsonData);
+      setLoading(false);
+
+      if (jsonData.length > 0) {
+        const columnKeys = Object.keys(jsonData[0]);
+        const dynamicColumns = columnKeys.map((key) => ({
+          key: key,
+          title: key,
+          dataIndex: key,
+          sorter: (a, b) => a[key].localeCompare(b[key]),
+        }));
+        setColumns(dynamicColumns);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
   };
 
-  const loadData = async () => {
-    const response = await fetch ('http://localhost:3000', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: query,
-      })
-    })
-    const data = await response.json()
-    setData(data)
-    setLoading(false)
-    
-  //   await fetch(`http://localhost:3000/`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       query: query,
-  //     }),
-      
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => setData(data))
-  //   .catch(err => console.error('Error: ' + err.message))
-  //   .finally(setLoading(false));
-
-    if (data.length > 0) {
-      loadCols(data);
-      setColumns(cols);
-    }
-  }
-
-  // Pull column/field names
-  const cols = []
-  function loadCols(input) {
-    for (const key in input[0]) {
-      const col = {
-        key: key,
-        title: key.replace(/_/g, " "),
-        dataIndex: key,
-        sorter: (a, b) => a.key.localeCompare(b.key)
-      }
-      cols.push(col)
-    }
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData();
+  };
 
   return (
     <>

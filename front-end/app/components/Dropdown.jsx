@@ -30,7 +30,7 @@ const Dropdown = () => {
               <AiOutlineBarChart className="icon dropdown-icon"/>
               <p>Data</p>
             </Link>
-            <Link href='/admin/login' className="dropdown-link" onClick={() => setOpen(!open)}>
+            <Link href='/admin' className="dropdown-link" onClick={() => setOpen(!open)}>
               <AiFillSetting className="icon dropdown-icon"/>
               <p>Admin</p>
             </Link>

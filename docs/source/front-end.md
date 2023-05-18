@@ -45,11 +45,15 @@ Provide users with the ability to interact with the Snohomish County PUD transmi
 ### Search
 The default view which allows any user to query the transmission drawing database and view the results.  See the API documentation **Response** section for details on what responses will be returned from different query inputs.
 
+![search_view_img](../../front-end/public/screenshots/20230517_SearchView.png)
+
 ### Data
 Provides insights and analysis of the transmission drawing data.
 
 ### Admin
 Currently allows users with a valid API key to perform Delete actions on search result records.
+
+![admin_view_img](../../front-end/public/screenshots/20230517_AdminView.png)
 
 ## GitHub Action Workflows
 *To be added.*

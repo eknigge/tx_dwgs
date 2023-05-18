@@ -1,5 +1,5 @@
 'use client';
-import { Table } from "antd";
+import { Button, Table, Popconfirm, message } from "antd";
 import { useState } from "react";
 
 const AdminView = () => {
@@ -9,6 +9,7 @@ const AdminView = () => {
   const [loading, setLoading] = useState(false);
   const [noResultsFound, setNoResultsFound] = useState(false);
   const [error, setError] = useState(false);
+  const [apiKey, setApiKey] = useState('');
 
   const fetchData = async () => {
     setNoResultsFound(false);
@@ -30,12 +31,30 @@ const AdminView = () => {
 
       if (jsonData.length > 0) {
         const columnKeys = Object.keys(jsonData[0]);
-        const dynamicColumns = columnKeys.map((key) => ({
-          key: key,
-          title: key,
-          dataIndex: key,
-          sorter: (a, b) => a[key].localeCompare(b[key]),
-        }));
+        const dynamicColumns = [
+          ...columnKeys.map((key) => ({
+            title: key,
+            dataIndex: key,
+            sorter: (a, b) => a[key].localeCompare(b[key]),
+            key: key,
+          })),
+          {
+            title: 'Actions',
+            dataIndex: 'actions',
+            render: (_, record) => (
+              <Popconfirm
+                title="Are you sure you want to delete this record?"
+                onConfirm={() => handleDelete(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="link" danger>
+                  Delete
+                </Button>
+              </Popconfirm>
+            ),
+          },
+        ];
         setColumns(dynamicColumns);
       } else {
         setNoResultsFound(true);
@@ -48,14 +67,54 @@ const AdminView = () => {
     }
   };
 
+  const deleteData = async (record) => {
+    console.log('Delete record: ' + record)
+    try {
+      const response = await fetch('http://localhost:3000/admin', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: record,
+          api_key: apiKey,
+          operation: 'delete'
+        })
+      });
+      const res = await response.text();
+      console.log("Delete " + res);
+      
+      message.success('Record deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting data:', error);
+      message.error('Error deleting record.')
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    fetchData();
+  };
+
+  const handleDelete = (record) => {
+    let rec = ''
+    for (let key in record) {
+      rec = record[key]
+      break
+    }
+    deleteData(rec);
     fetchData();
   };
 
   return (
     <>
       <form className="search-form" action="" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className="searchbar"
+          onChange={text => setApiKey(text.target.value)}
+          placeholder="Enter API Key (not needed to search)"
+        />
         <input
           type="text"
           className="searchbar"

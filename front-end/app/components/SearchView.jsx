@@ -32,8 +32,9 @@ const SearchView = () => {
         const columnKeys = Object.keys(jsonData[0]);
         const dynamicColumns = columnKeys.map((key) => ({
           key: key,
-          title: key,
+          title: <b>{key}</b>,
           dataIndex: key,
+          className: 'results-table-header',
           sorter: (a, b) => a[key].localeCompare(b[key]),
         }));
         setColumns(dynamicColumns);
@@ -73,6 +74,7 @@ const SearchView = () => {
             className="results-table"
             dataSource={data}
             columns={columns}
+            rowClassName={()=>'results-table-row'}
             scroll={{
               x: 1,
             }}

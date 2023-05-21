@@ -8,6 +8,12 @@ module.exports = {
     'standard'
   ],
   overrides: [
+    {
+      files: [
+        '*.js',
+        '*.jsx'
+      ]
+    }
   ],
   parserOptions: {
     ecmaVersion: 'latest',

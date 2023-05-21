@@ -87,7 +87,7 @@ const SearchView = () => {
                     pageSizeOptions: ['10', '20', '50', '100'], // Specify the options for items per page
                     showSizeChanger: true, // Show the page size changer component
                     defaultPageSize: 10, // Set the default number of items per page
-                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results` // Display the total number of results
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`, // Display the total number of results
                   }}
                 />
           )

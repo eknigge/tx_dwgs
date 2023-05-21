@@ -11,11 +11,20 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
   plugins: [
-    'react'
+    'react',
+    'jsx-a11y'
   ],
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   rules: {
     'no-unreachable-loop': 'off',
     'react/prop-types': 'off'

@@ -1,3 +1,4 @@
+import React from 'react'
 const Data = () => {
   return (
     <>
@@ -8,4 +9,4 @@ const Data = () => {
   )
 }
 
-export default Data;
+export default Data

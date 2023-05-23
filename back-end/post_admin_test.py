@@ -2,10 +2,7 @@ import requests
 
 url = 'http://localhost:3000/admin'
 data = {
-    'query': 'TA-26',
-    #invalid
-    # 'api_key': 'caphie7chai2yaengooghiv7OuThiepie4kah2',
-    #valid
+    'query': 'TA-17',
     'api_key': 'caphie7chai2yaengooghiv7OuThiepie4kah2ku',
     'operation': 'delete'
 }

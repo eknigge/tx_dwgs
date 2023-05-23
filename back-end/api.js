@@ -60,8 +60,8 @@ app.post('/', (req, res) => {
 // "/admin" post endpoint
 app.post('/admin', (req, res) => {
 
-	let userQuery = undefined
-	let deleteQuery = undefined
+	let userQuery = undefined;
+	let deleteQuery = undefined;
 
 	// validate api key
 	userKey = req.body.api_key;
@@ -71,7 +71,15 @@ app.post('/admin', (req, res) => {
 			// check api key
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
-			} 
+				console.log('bad API key, no update action')
+			// if key valid then run query
+			} else {
+				connection.query(deleteQuery,
+					function (err, results, fields) {
+						console.log(`delete: ${userQuery}`)
+						res.send('success');
+					})
+			}
 		})
 
 	// determine delete query
@@ -96,17 +104,11 @@ app.post('/admin', (req, res) => {
 
 	// update user_logging table
 	let loggingUpdateQuery = queries.updateUserLogging(userKey);
-	connection.query(loggingUpdateQuery, 
+	connection.query(loggingUpdateQuery,
 		function (err, results, fields) {
 			console.log('updated user_logging table')
 		})
-	
-	// perform action
-	connection.query(deleteQuery, 
-		function(err, results, fields){
-			console.log(`delete: ${userQuery}`)
-			res.send('success');
-		})
+
 })
 
 app.listen(port, () => {

@@ -101,13 +101,13 @@ const AdminView = () => {
     fetchData()
   }
 
-  const handleDelete = (record) => {
+  const handleDelete = async (record) => {
     let rec = ''
     for (const key in record) {
       rec = record[key]
       break
     }
-    deleteData(rec)
+    await deleteData(rec)
     fetchData()
   }
 

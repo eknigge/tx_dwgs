@@ -237,3 +237,18 @@ font-style: italic;
     flex-direction: row;
   }
 }
+
+/* TABLEAU */
+.tableauContainer {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
+
+.tableauViz {
+width: 1016px;
+height: 991px;
+align-items: center;
+justify-content: center;
+}

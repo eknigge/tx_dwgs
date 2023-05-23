@@ -3,7 +3,7 @@ SELECT drawing_name, drawing_title, revision_number, revision_date
 FROM pole
 JOIN pole_drawings ON pole.pole_id = pole_drawings.pole_id
 JOIN drawings ON pole_drawings.drawing_id = drawings.drawing_id
-WHERE pole_stencil = "CI 0/5";
+WHERE pole_stencil = "EA-O 3/3";
 
 -- Transmission Drawings by Line Number
 SELECT DISTINCT UPPER(drawing_name) as `drawing_name`, drawing_title
@@ -79,3 +79,47 @@ VALUES (
 		JOIN user ON user.user_id = user_api_key.user_id
 		WHERE key_value = "API_KEY")
     );
+
+SELECT *
+FROM pole
+JOIN pole_drawings ON pole.pole_id = pole_drawings.pole_id
+JOIN drawings ON pole_drawings.drawing_id = drawings.drawing_id
+WHERE pole_stencil = "EA-O 3/3";
+
+
+-- UPDATE drawings drawing_name
+UPDATE drawings
+SET drawing_name = "T-999"
+WHERE drawing_id = 
+	(SELECT * FROM
+		(SELECT drawing_id FROM drawings
+		WHERE drawing_name = "TA-16")
+	tmpTable);
+
+-- UPDATE drawings drawing_title
+UPDATE drawings
+SET drawing_title = "new title of drawing"
+WHERE drawing_id = 
+	(SELECT * FROM
+		(SELECT drawing_id FROM drawings
+		WHERE drawing_name = "TA-16")
+	tmpTable);
+
+-- UPDATE drawings revision_number
+UPDATE drawings
+SET revision_number = 10
+WHERE drawing_id = 
+	(SELECT * FROM
+		(SELECT drawing_id FROM drawings
+		WHERE drawing_name = "TA-16")
+	tmpTable);  
+    
+-- UPDATE drawings revision_date
+UPDATE drawings
+SET revision_date = "2023-01-01"
+WHERE drawing_id = 
+	(SELECT * FROM
+		(SELECT drawing_id FROM drawings
+		WHERE drawing_name = "TA-16")
+	tmpTable);      
+    

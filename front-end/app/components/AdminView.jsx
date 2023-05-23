@@ -85,9 +85,10 @@ const AdminView = () => {
       console.log('Response: ' + res)
       if (res === 'success') {
         message.success('Record deleted successfully.')
-      }
-      if (res === 'Bad API Key') {
+      } else if (res === 'Bad API Key') {
         message.error('Bad API Key')
+      } else {
+        message.warning(res)
       }
     } catch (error) {
       console.error('Error deleting data:', error)

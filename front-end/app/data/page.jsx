@@ -3,12 +3,12 @@ import { React, useEffect } from 'react'
 
 const TableauVisualization = () => {
   useEffect(() => {
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-    document.getElementById('viz1684472411252').appendChild(scriptElement);
+    const scriptElement = document.createElement('script')
+    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js'
+    document.getElementById('viz1684472411252').appendChild(scriptElement)
 
     return () => {
-      document.getElementById('viz1684472411252').removeChild(scriptElement);
+      document.getElementById('viz1684472411252').removeChild(scriptElement)
     }
   }, [])
 

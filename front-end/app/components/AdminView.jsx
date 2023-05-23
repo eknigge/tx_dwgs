@@ -109,7 +109,7 @@ const AdminView = () => {
     <>
       <form className='search-form' action='' onSubmit={handleSubmit}>
         <input
-          type='text'
+          type='password'
           className='searchbar'
           onChange={text => setApiKey(text.target.value)}
           placeholder='Enter API Key (not needed to search)'

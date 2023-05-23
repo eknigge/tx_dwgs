@@ -2,17 +2,18 @@
 import React, { useEffect } from 'react';
 
 const TableauVisualization = () => {
-  useEffect(() => {
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-    document.getElementById('viz1684472411252').appendChild(scriptElement);
+useEffect(() => {
+  const scriptElement = document.createElement('script');
+  scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+  document.getElementById('viz1684472411252').appendChild(scriptElement);
 
-    return () => {
+  return () => {
 
-      document.getElementById('viz1684472411252').removeChild(scriptElement);
-    };
-  }, []);
+    document.getElementById('viz1684472411252').removeChild(scriptElement);
+  };
+}, []);
 
+const Data = () => {
   return (
     <div className="tableauContainer">
       <div className="tableauPlaceholder" id="viz1684472411252" style={{ position: 'relative' }}>
@@ -50,4 +51,3 @@ const TableauVisualization = () => {
 };
 
 export default TableauVisualization;
-

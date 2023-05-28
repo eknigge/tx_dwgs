@@ -2,6 +2,7 @@
 import { React, useState } from 'react'
 import { Button, Table, Popconfirm } from 'antd'
 import { DeleteRecord } from '../api/DeleteRecord'
+import { FetchData } from '../api/FetchData'
 
 const AdminView = () => {
   const [query, setQuery] = useState('')
@@ -12,26 +13,15 @@ const AdminView = () => {
   const [error, setError] = useState(false)
   const [apiKey, setApiKey] = useState('')
 
-  const fetchData = async () => {
+  const loadData = async () => {
     setNoResultsFound(false)
     setError(false)
     setLoading(true)
-    try {
-      const response = await fetch('http://localhost:3000', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query
-        })
-      })
-      const jsonData = await response.json()
-      setData(jsonData)
-      setLoading(false)
 
-      if (jsonData.length > 0) {
-        const columnKeys = Object.keys(jsonData[0])
+    try {
+      const res = await FetchData(query)
+      if (res.length > 0) {
+        const columnKeys = Object.keys(res[0])
         const dynamicColumns = [
           ...columnKeys.map((key) => ({
             title: key,
@@ -57,9 +47,13 @@ const AdminView = () => {
           }
         ]
         setColumns(dynamicColumns)
+        setData(res)
       } else {
         setNoResultsFound(true)
+        setColumns([])
+        setData([])
       }
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error)
       setData([])
@@ -68,9 +62,9 @@ const AdminView = () => {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    fetchData()
+    await loadData()
   }
 
   const handleDelete = async (record) => {
@@ -80,7 +74,7 @@ const AdminView = () => {
       break
     }
     await DeleteRecord(apiKey, rec)
-    fetchData()
+    await loadData()
   }
 
   return (

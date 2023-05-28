@@ -1,4 +1,4 @@
-name: ESLint
+name: front-end ESLint
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   eslint:
-    name: Run ESLint
+    name: Run ESLint on front-end
     runs-on: ubuntu-latest
     defaults:
       run:

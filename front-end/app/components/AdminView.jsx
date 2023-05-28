@@ -1,6 +1,7 @@
 'use client'
 import { React, useState } from 'react'
-import { Button, Table, Popconfirm, message } from 'antd'
+import { Button, Table, Popconfirm } from 'antd'
+import { DeleteRecord } from '../api/DeleteRecord'
 
 const AdminView = () => {
   const [query, setQuery] = useState('')
@@ -67,35 +68,6 @@ const AdminView = () => {
     }
   }
 
-  const deleteData = async (record) => {
-    console.log('Delete record: ' + record)
-    try {
-      const response = await fetch('http://localhost:3000/admin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: record,
-          api_key: apiKey,
-          operation: 'delete'
-        })
-      })
-      const res = await response.text()
-      console.log('Response: ' + res)
-      if (res === 'success') {
-        message.success('Record deleted successfully.')
-      } else if (res === 'Bad API Key') {
-        message.error('Bad API Key')
-      } else {
-        message.warning(res)
-      }
-    } catch (error) {
-      console.error('Error deleting data:', error)
-      message.error('Error deleting record.')
-    }
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
     fetchData()
@@ -107,7 +79,7 @@ const AdminView = () => {
       rec = record[key]
       break
     }
-    await deleteData(rec)
+    await DeleteRecord(apiKey, rec)
     fetchData()
   }
 

@@ -1,8 +1,8 @@
 'use client'
 import { React, useState } from 'react'
 import { Button, Table, Popconfirm } from 'antd'
+import { FetchQueryData } from '../api/FetchQueryData'
 import { DeleteRecord } from '../api/DeleteRecord'
-import { FetchData } from '../api/FetchData'
 
 const AdminView = () => {
   const [query, setQuery] = useState('')
@@ -19,7 +19,7 @@ const AdminView = () => {
     setLoading(true)
 
     try {
-      const res = await FetchData(query)
+      const res = await FetchQueryData(query)
       if (res.length > 0) {
         const columnKeys = Object.keys(res[0])
         const dynamicColumns = [

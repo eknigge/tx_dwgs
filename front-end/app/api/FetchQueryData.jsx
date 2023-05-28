@@ -1,4 +1,4 @@
-export const FetchData = async (query) => {
+export const FetchQueryData = async (query) => {
   try {
     const response = await fetch('http://localhost:3000', {
       method: 'POST',

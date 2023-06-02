@@ -1,6 +1,7 @@
 'use client'
 import { React, useState } from 'react'
 import { Table } from 'antd'
+import { FetchQueryData } from '../api/FetchQueryData'
 
 const SearchView = () => {
   const [query, setQuery] = useState('')
@@ -10,26 +11,18 @@ const SearchView = () => {
   const [noResultsFound, setNoResultsFound] = useState(false)
   const [error, setError] = useState(false)
 
-  const fetchData = async () => {
+  const loadData = async () => {
     setNoResultsFound(false)
     setError(false)
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:3000', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query
-        })
-      })
-      const jsonData = await response.json()
-      setData(jsonData)
+      const response = await FetchQueryData(query)
+      setData(response)
       setLoading(false)
 
-      if (jsonData.length > 0) {
-        const columnKeys = Object.keys(jsonData[0])
+      // Get Column Headers
+      if (response.length > 0) {
+        const columnKeys = Object.keys(response[0])
         const dynamicColumns = columnKeys.map((key) => ({
           key,
           title: <b>{key}</b>,
@@ -51,7 +44,7 @@ const SearchView = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fetchData()
+    loadData()
   }
 
   return (

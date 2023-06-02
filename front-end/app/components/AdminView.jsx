@@ -1,6 +1,8 @@
 'use client'
 import { React, useState } from 'react'
-import { Button, Table, Popconfirm, message } from 'antd'
+import { Button, Table, Popconfirm } from 'antd'
+import { FetchQueryData } from '../api/FetchQueryData'
+import { DeleteRecord } from '../api/DeleteRecord'
 
 const AdminView = () => {
   const [query, setQuery] = useState('')
@@ -11,26 +13,15 @@ const AdminView = () => {
   const [error, setError] = useState(false)
   const [apiKey, setApiKey] = useState('')
 
-  const fetchData = async () => {
+  const loadData = async () => {
     setNoResultsFound(false)
     setError(false)
     setLoading(true)
-    try {
-      const response = await fetch('http://localhost:3000', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query
-        })
-      })
-      const jsonData = await response.json()
-      setData(jsonData)
-      setLoading(false)
 
-      if (jsonData.length > 0) {
-        const columnKeys = Object.keys(jsonData[0])
+    try {
+      const res = await FetchQueryData(query)
+      if (res.length > 0) {
+        const columnKeys = Object.keys(res[0])
         const dynamicColumns = [
           ...columnKeys.map((key) => ({
             title: key,
@@ -56,9 +47,13 @@ const AdminView = () => {
           }
         ]
         setColumns(dynamicColumns)
+        setData(res)
       } else {
         setNoResultsFound(true)
+        setColumns([])
+        setData([])
       }
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error)
       setData([])
@@ -67,42 +62,19 @@ const AdminView = () => {
     }
   }
 
-  const deleteData = async (record) => {
-    console.log('Delete record: ' + record)
-    try {
-      const response = await fetch('http://localhost:3000/admin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: record,
-          api_key: apiKey,
-          operation: 'delete'
-        })
-      })
-      const res = await response.text()
-      console.log('Delete ' + res)
-      message.success('Record deleted successfully.')
-    } catch (error) {
-      console.error('Error deleting data:', error)
-      message.error('Error deleting record.')
-    }
-  }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    fetchData()
+    await loadData()
   }
 
-  const handleDelete = (record) => {
+  const handleDelete = async (record) => {
     let rec = ''
     for (const key in record) {
       rec = record[key]
       break
     }
-    deleteData(rec)
-    fetchData()
+    await DeleteRecord(apiKey, rec)
+    await loadData()
   }
 
   return (

@@ -173,9 +173,9 @@ body {
   font-size: 0.9rem;
 }
 
-.results-table-header {
+/*.results-table-header {
 font-style: italic;
-}
+}*/
 
 /* GENERIC WARNING TEXT CLASS */
 .warning-text {
@@ -240,15 +240,20 @@ font-style: italic;
 
 /* TABLEAU */
 .tableauContainer {
-display: flex;
+display: grid;
+flex-direction: column;
 justify-content: center;
 align-items: center;
-height: 100vh;
+height: 100%;
+margin: 2rem;
+row-gap: 3rem;
 }
 
 .tableauViz {
 width: 1016px;
 height: 991px;
-align-items: center;
+display: flex;
 justify-content: center;
+align-items: center;
+margin: 20rem;
 }

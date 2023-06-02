@@ -8,6 +8,7 @@
   --logo-green: #14A484;
   --black: #000000;
   --white: #FFFFFF;
+  --blue: #0000ff;
 }
 
 * {
@@ -176,6 +177,15 @@ body {
 /*.results-table-header {
 font-style: italic;
 }*/
+
+.edit-cell {
+  border-bottom: 1px solid var(--blue);
+}
+
+.edit-cell:focus {
+  border-bottom: 2px solid var(--logo-green);
+  outline: none;
+}
 
 /* GENERIC WARNING TEXT CLASS */
 .warning-text {

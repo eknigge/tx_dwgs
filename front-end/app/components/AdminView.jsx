@@ -1,6 +1,6 @@
 'use client'
 import { React, useState } from 'react'
-import { Button, Table, Popconfirm } from 'antd'
+import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchQueryData } from '../api/FetchQueryData'
 import { DeleteRecord } from '../api/DeleteRecord'
 
@@ -12,6 +12,7 @@ const AdminView = () => {
   const [noResultsFound, setNoResultsFound] = useState(false)
   const [error, setError] = useState(false)
   const [apiKey, setApiKey] = useState('')
+  const [editingKey, setEditingKey] = useState('')
 
   const loadData = async () => {
     setNoResultsFound(false)
@@ -34,25 +35,9 @@ const AdminView = () => {
             title: key,
             dataIndex: key,
             sorter: (a, b) => a[key].localeCompare(b[key]),
-            key
-          })),
-          {
-            title: 'Actions',
-            dataIndex: 'actions',
-            render: (_, record) => (
-              <Popconfirm
-                title='Are you sure you want to delete this record?'
-                onConfirm={() => handleDelete(record)}
-                okText='Yes'
-                cancelText='No'
-              >
-                <Button type='link' danger>
-                  Delete
-                </Button>
-              </Popconfirm>
-            )
-          }
-        ]
+            key,
+            editable: true
+          }))]
         setColumns(dynamicColumns)
       } else {
         setNoResultsFound(true)
@@ -86,6 +71,102 @@ const AdminView = () => {
     await loadData()
   }
 
+  const handleSave = (record) => {
+    const row = data.find((item) => item.id === record.id)
+    // console.log(data)
+    console.log(record)
+    console.log('record id: ' + record.id)
+    // console.log(row)
+    if (!row) {
+      message.error('Invalid row!')
+      return
+    }
+    console.log('Valid row.')
+    const newData = [...data]
+    const index = newData.findIndex((item) => record.id === item.id)
+
+    if (index > -1) {
+      console.log(index)
+      // Update existing row
+      const item = newData[index]
+      newData.splice(index, 1, { ...item, ...row })
+      setData(newData)
+      setEditingKey('')
+    } else {
+      // Add new row
+      newData.push(row)
+      setData(newData)
+      setEditingKey('')
+    }
+  }
+
+  const isEditing = (record) => record.id === editingKey
+
+  const edit = (record) => {
+    setEditingKey(record.id)
+  }
+
+  const cancel = () => {
+    setEditingKey('')
+  }
+
+  const columnsWithActions = [
+    ...columns,
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      render: (_, record) => {
+        const editable = isEditing(record)
+
+        return editable
+          ? (
+          // Render save and cancel links for editing
+          <span>
+            <Button type='link' onClick={() => handleSave(record)}>Save</Button>
+            <Popconfirm
+              title="Are you sure you want to cancel?"
+              onConfirm={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type='link' danger>Cancel</Button>
+            </Popconfirm>
+          </span>
+            )
+          : (
+          // Render edit and delete links for non-editing
+          <span>
+            <Button type='link'onClick={() => edit(record)}>Edit</Button>
+            <Popconfirm
+              title="Are you sure you want to delete this record?"
+              onConfirm={() => handleDelete(record)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type='link' danger>Delete</Button>
+            </Popconfirm>
+          </span>
+            )
+      }
+    }
+  ]
+
+  const columnsWithEditableCells = columnsWithActions.map((column) => {
+    if (!column.editable) {
+      return column
+    }
+
+    return {
+      ...column,
+      onCell: (record) => ({
+        record,
+        dataIndex: column.dataIndex,
+        title: column.title,
+        editing: isEditing(record)
+      })
+    }
+  })
+
   return (
     <>
       <form className='search-form' action='' onSubmit={handleSubmit}>
@@ -113,17 +194,23 @@ const AdminView = () => {
         : (loading
             ? <span className='loader'></span>
             : <Table
+                components={{
+                  body: {
+                    cell: EditableCell
+                  }
+                }}
                 className='results-table'
                 dataSource={data}
-                columns={columns}
+                columns={columnsWithEditableCells}
+                bordered
                 scroll={{
                   x: 1
                 }}
                 pagination={{
-                  pageSizeOptions: ['10', '20', '50', '100'], // Specify the options for items per page
-                  showSizeChanger: true, // Show the page size changer component
-                  defaultPageSize: 10, // Set the default number of items per page
-                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results` // Display the total number of results
+                  pageSizeOptions: ['10', '20', '50', '100'],
+                  showSizeChanger: true,
+                  defaultPageSize: 10,
+                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
                 }}
               />
           )
@@ -134,6 +221,41 @@ const AdminView = () => {
         : null
       }
     </>
+  )
+}
+
+const EditableCell = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  return (
+    <td {...restProps}>
+      {editing
+        ? (
+            // Render editable cell for editing
+            <div>
+              {title === 'key'
+                ? (
+                    // Make key column non-editable
+                    record[dataIndex]
+                  )
+                : (
+                // Render input for other editable columns
+                <div className='edit-cell' suppressContentEditableWarning contentEditable>{record[dataIndex]}</div>
+                  )}
+            </div>
+          )
+        : (
+            // Render non-editable cell
+            children
+          )}
+    </td>
   )
 }
 

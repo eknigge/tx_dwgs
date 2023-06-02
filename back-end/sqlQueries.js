@@ -109,8 +109,78 @@ const updateUserLogging = function (apiKey) {
 		);`
 }
 
+// get pole table
+const getPoleTable = function () {
+	return `
+	SELECT * FROM pole;`
+}
+
+// get pole_drawings table
+const getPoleDrawingsTable = function () {
+	return `
+	SELECT * FROM pole_drawings;`
+}
+
+// get line table 
+const getLineTable = function () {
+	return `
+	SELECT * FROM line;`
+}
+
+// get drawings table
+const getDrawingsTable = function () {
+	return `
+	SELECT drawing_id, drawing_name, drawing_title, revision_number, revision_date
+	FROM drawings;`
+}
+
+// UPDATE pole_id
+const updatePoleId = function (pole_id, pole_stencil) {
+	return `
+	UPDATE pole
+	SET pole_stencil = "${pole_stencil}"
+	WHERE pole_id = ${pole_id};`
+}
+
+// UPDATE drawings
+const updateDrawings = function (drawingNameExisting, drawingNameNew,
+	drawingTitle, revisionNumber, revisionDate) {
+	return `
+	UPDATE drawings
+	SET 
+		drawing_name = "${drawingNameNew}",
+		drawing_title = "${drawingTitle}",
+		revision_number = ${revisionNumber},
+		revision_date = "${revisionDate}"
+WHERE drawing_id = 
+	(SELECT * FROM 
+		(SELECT drawing_id FROM drawings
+        WHERE drawing_name = "${drawingNameExisting}")
+	tmpTable);
+	`
+}
+
+// UPDATE line table
+const updateLineTable = function (line_number_existing, line_number_new,
+	line_name, line_abbreviation) {
+	return `
+	UPDATE line
+	SET
+	line_number = ${line_number_new},
+		line_name = "${line_name}",
+		line_abbreviation = "${line_abbreviation}"
+	WHERE line_id =
+		(SELECT * FROM
+			(SELECT line_id FROM line
+			WHERE line_number = ${line_number_existing})
+		tmpTable);
+	`
+}
+
+
 
 module.exports = {
 	poleQuery, lineQuery, dwgQuery, apiKeyQuery, deletePole,
-	deleteDwg, deleteLine, addLogEvent, updateUserLogging
+	deleteDwg, deleteLine, addLogEvent, updateUserLogging, getPoleTable, getPoleDrawingsTable,
+	getLineTable, getDrawingsTable, updatePoleId, updateDrawings, updateLineTable
 };

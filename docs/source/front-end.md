@@ -3,7 +3,7 @@
 ## Purpose
 Provide users with the ability to interact with the Snohomish County PUD transmission drawings database.  
 ## Getting Started
-#### To run the application locally:
+### To run the application locally:
 1. Clone the `tx_dwgs` repository if you haven't done so already.
 
 2. Change into `front-end` directory.

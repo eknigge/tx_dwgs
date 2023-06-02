@@ -80,13 +80,6 @@ VALUES (
 		WHERE key_value = "API_KEY")
     );
 
-SELECT *
-FROM pole
-JOIN pole_drawings ON pole.pole_id = pole_drawings.pole_id
-JOIN drawings ON pole_drawings.drawing_id = drawings.drawing_id
-WHERE pole_stencil = "EA-O 3/3";
-
-
 -- UPDATE drawings drawing_name
 UPDATE drawings
 SET drawing_name = "T-999"
@@ -123,3 +116,34 @@ WHERE drawing_id =
 		WHERE drawing_name = "TA-16")
 	tmpTable);      
     
+-- update pole stencil
+UPDATE pole
+SET pole_stencil = "VALUE"
+WHERE pole_id = 10;
+
+-- update drawings all fields
+UPDATE drawings
+SET 
+	drawing_name = "new name",
+    drawing_title = "t-new-dwg",
+    revision_number = 99,
+    revision_date = (SELECT CURRENT_DATE())
+WHERE drawing_id = 
+	(SELECT * FROM 
+		(SELECT drawing_id FROM drawings
+        WHERE drawing_name = "new name")
+	tmpTable);
+
+-- update line table
+UPDATE line
+SET
+	line_number = 103,
+    line_name = "new_name",
+    line_abbreviation = "NN"
+WHERE line_id = 
+	(SELECT * FROM
+		(SELECT line_id FROM line
+        WHERE line_number = 103)
+	tmpTable);
+
+select * from line limit 10;

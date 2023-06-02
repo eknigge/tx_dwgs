@@ -17,7 +17,8 @@ INSERT INTO user (user_first_name, user_last_name, user_email)
 VALUES 
 	("Eric", "K", "erick@gmail.com"),
     ("Zaya", "E", "ZayaE@gmail.com"),
-    ("Lucas", "K", "LucasK@gmail.com");
+    ("Lucas", "K", "LucasK@gmail.com"),
+    ("Anon", "NA", "none");
     
 -- api key sample data
 INSERT INTO api_key (key_value, valid)

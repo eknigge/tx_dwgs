@@ -20,6 +20,13 @@ const AdminView = () => {
 
     try {
       const res = await FetchQueryData(query)
+      const dataWId = res.map((item, index) => ({
+        ...item,
+        id: index
+      }))
+      console.log(dataWId)
+      setData(dataWId)
+
       if (res.length > 0) {
         const columnKeys = Object.keys(res[0])
         const dynamicColumns = [
@@ -47,7 +54,6 @@ const AdminView = () => {
           }
         ]
         setColumns(dynamicColumns)
-        setData(res)
       } else {
         setNoResultsFound(true)
         setColumns([])
@@ -70,7 +76,10 @@ const AdminView = () => {
   const handleDelete = async (record) => {
     let rec = ''
     for (const key in record) {
+      console.log(record)
+      console.log('key ' + key)
       rec = record[key]
+      console.log(rec)
       break
     }
     await DeleteRecord(apiKey, rec)

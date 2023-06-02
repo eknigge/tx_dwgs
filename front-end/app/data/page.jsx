@@ -50,7 +50,6 @@ const TableauVisualization = () => {
         </object>
       </div>
 
-
         <noscript>
           <a href="#">
             <img

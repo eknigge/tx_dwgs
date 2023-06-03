@@ -1,7 +1,6 @@
 'use client'
 import { React, useState } from 'react'
 import { Button, Table, Popconfirm, message } from 'antd'
-import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchQueryData } from '../api/FetchQueryData'
 import { DeleteRecord } from '../api/DeleteRecord'
 

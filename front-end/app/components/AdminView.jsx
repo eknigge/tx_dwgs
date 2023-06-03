@@ -1,6 +1,6 @@
 'use client'
 import { React, useState } from 'react'
-import { Button, Table, Popconfirm } from 'antd'
+import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchQueryData } from '../api/FetchQueryData'
 import { DeleteRecord } from '../api/DeleteRecord'
 
@@ -68,13 +68,17 @@ const AdminView = () => {
   }
 
   const handleDelete = async (record) => {
-    let rec = ''
-    for (const key in record) {
-      rec = record[key]
-      break
+    if (apiKey.length > 0) {
+      let rec = ''
+      for (const key in record) {
+        rec = record[key]
+        break
+      }
+      await DeleteRecord(apiKey, rec)
+      await loadData()
+    } else {
+      message.error('Enter an API key to delete a record.')
     }
-    await DeleteRecord(apiKey, rec)
-    await loadData()
   }
 
   return (

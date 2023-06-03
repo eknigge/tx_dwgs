@@ -1,10 +1,10 @@
 'use client'
 import { React, useState } from 'react'
 import { Button, Table, Popconfirm, message } from 'antd'
-import { FetchQueryData } from '../api/FetchQueryData'
-import { DeleteRecord } from '../api/DeleteRecord'
+import { FetchQueryData } from '../../api/FetchQueryData'
+import { DeleteRecord } from '../../api/DeleteRecord'
 
-const AdminView = () => {
+const AdminView = (table) => {
   const [query, setQuery] = useState('')
   const [data, setData] = useState([])
   const [columns, setColumns] = useState([])

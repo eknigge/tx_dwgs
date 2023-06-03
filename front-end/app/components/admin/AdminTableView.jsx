@@ -1,11 +1,12 @@
 'use client'
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Table, Popconfirm, message } from 'antd'
-import { FetchQueryData } from '../../api/FetchQueryData'
+import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
 
-const AdminView = (table) => {
-  const [query, setQuery] = useState('')
+const AdminView = () => {
+  const [table, setTable] = useState('')
   const [data, setData] = useState([])
   const [columns, setColumns] = useState([])
   const [loading, setLoading] = useState(false)
@@ -14,25 +15,22 @@ const AdminView = (table) => {
   const [apiKey, setApiKey] = useState('')
   const [editingKey, setEditingKey] = useState('')
 
-  const loadData = async () => {
+  const router = useRouter()
+
+  const loadData = async (table) => {
     setNoResultsFound(false)
     setError(false)
     setLoading(true)
 
     try {
-      const res = await FetchQueryData(query)
-      const dataWId = res.map((item, index) => ({
-        ...item,
-        id: index
-      }))
-      console.log(dataWId)
-      setData(dataWId)
+      const res = await FetchTableData('drawings')
+      setData(res)
 
       if (res.length > 0) {
         const columnKeys = Object.keys(res[0])
         const dynamicColumns = [
           ...columnKeys.map((key) => ({
-            title: key,
+            title: key.replace(/_/g, ' ').toUpperCase(),
             dataIndex: key,
             sorter: (a, b) => a[key].localeCompare(b[key]),
             key,
@@ -60,12 +58,10 @@ const AdminView = (table) => {
 
   const handleDelete = async (record) => {
     if (apiKey.length > 0) {
-      let rec = ''
-      for (const key in record) {
-        rec = record[key]
-        break
-      }
-      await DeleteRecord(apiKey, rec)
+      const deleteProp = Object.keys(record)[1]
+      const deleteValue = record[deleteProp]
+      console.log(deleteValue)
+      await DeleteRecord(apiKey, deleteValue)
       await loadData()
     } else {
       message.error('Enter an API key to delete a record.')
@@ -76,7 +72,7 @@ const AdminView = (table) => {
     const row = data.find((item) => item.id === record.id)
     // console.log(data)
     console.log(record)
-    console.log('record id: ' + record.id)
+    console.log('record id: ' + record)
     // console.log(row)
     if (!row) {
       message.error('Invalid row!')
@@ -168,6 +164,16 @@ const AdminView = (table) => {
     }
   })
 
+  useEffect(() => {
+    loadData()
+    if (router.isReady) {
+      const { query } = router
+      console.log(query)
+      setTable(router.query)
+      console.log(table)
+    }
+  }, [router.isReady])
+
   return (
     <>
       <form className='search-form' action='' onSubmit={handleSubmit}>
@@ -175,15 +181,8 @@ const AdminView = (table) => {
           type='password'
           className='searchbar'
           onChange={text => setApiKey(text.target.value)}
-          placeholder='Enter API Key (not needed to search)'
+          placeholder='Enter API Key'
         />
-        <input
-          type='text'
-          className='searchbar'
-          onChange={text => setQuery(text.target.value)}
-          placeholder='Search the database'
-        />
-        <button type='submit' className='submit-btn'>Search</button>
       </form>
 
       {noResultsFound

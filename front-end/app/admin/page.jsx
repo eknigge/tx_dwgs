@@ -1,11 +1,11 @@
 import React from 'react'
-import AdminTableSelector from '../components/admin/AdminTableSelector'
+import AdminTableSelectorView from '../components/admin/AdminTableSelectorView'
 
 const Admin = () => {
   return (
     <div className='container'>
       <h1 className='page-title'>Admin</h1>
-      <AdminTableSelector />
+      <AdminTableSelectorView />
     </div>
   )
 }

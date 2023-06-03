@@ -3,7 +3,7 @@
 ## Purpose
 Provide users with the ability to interact with the Snohomish County PUD transmission drawings database.  
 ## Getting Started
-#### To run the application locally:
+### To run the application locally:
 1. Clone the `tx_dwgs` repository if you haven't done so already.
 
 2. Change into `front-end` directory.
@@ -56,6 +56,8 @@ Currently allows users with a valid API key to perform Delete actions on search 
 ![admin_view_img](../../front-end/public/screenshots/20230517_AdminView.png)
 
 ## GitHub Action Workflows
-*To be added.*
 ### ESLint
-*To be added.*
+- Pertains to the `front-end` directory.
+    - Includes `.js` and `.jsx` files types.
+    - Runs on all pushes to GitHub and PRs/merges into `main`.
+- Implements [ESLint Standard](https://github.com/standard/eslint-config-standard) configuration.

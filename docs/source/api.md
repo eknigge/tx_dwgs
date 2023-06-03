@@ -1,5 +1,6 @@
 # API
 
+(unique_identifiers)=
 ## Errors
 We use conventional HTTP response codes to indicate the success or failure of an API request. The following table provides additional detail. 
 | HTTP Status Code   | Code Summary                                                           |
@@ -8,8 +9,273 @@ We use conventional HTTP response codes to indicate the success or failure of an
 | 400 - Bad Request  | The request was unacceptable often due to missing a required parameter |
 | 500 - Server Error | Server side errors                                                     |
 
+## Unique Identifiers
+To modify a single record, choose a singular and distinct identifier. If two fields are identified, the system will automatically default to using the ID field.
+
+Table | Unique Identifier 
+--- | --- | 
+pole | pole_id
+pole_drawings | pole_drawings_id
+line | line_id, line_number
+drawings | drawing_id, drawing_name
+
 
 ## Requests
+### POST /update_line
+```
+POST http://localhost:3000/update_line
+```
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string* | valid api key
+table_name | *string* | name of table type to modify
+table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers). See example below, note that **all** fields must be included for update.
+
+
+```
+{
+	"api_key": "string",
+	"table_name": "string",
+	"table_value": {
+		"line_number_existing": "string",
+		"line_number_new": "string",
+		"line_name": "string",
+		"line_abbreviation": "string"
+	}
+}
+```
+#### Response
+Code | Description 
+--- | --- |
+200 | OK
+400 | Error. *Description to detail issue.*
+
+### POST /update_drawings
+```
+POST http://localhost:3000/update_drawings
+```
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string* | valid api key
+table_name | *string* | name of table type to modify
+table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers). See example below, note that **all** fields must be included for update.
+
+
+```
+{
+	"api_key": "string",
+	"table_name": "string",
+	"table_value": {
+		"drawing_name_existing": "string",
+		"drawing_name_new": "string",
+		"drawing_title": "string",
+		"revision_number": "string/int",
+		"revision_date": "string"
+	}
+}
+```
+#### Response
+Code | Description 
+--- | --- |
+200 | OK
+400 | Error. *Description to detail issue.*
+
+
+### POST /update_pole
+```
+POST http://localhost:3000/update_pole
+```
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string* | valid api key
+table_name | *string* | name of table type to modify
+table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers)
+
+
+```
+{
+	"api_key": "string",
+	"table_name": "string",
+	"table_value": {
+		"unique_identifier": "int",
+		"updated_field": "string"
+	}
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | OK
+400 | Error. *Description to detail issue.*
+
+### POST /tables
+```
+POST http://localhost:3000/tables
+```
+
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+tables | *string* | name of table, accepts : "pole", "pole_drawings", "line", and "drawings"
+```
+{
+	"table": "string",
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | OK
+400 | Invalid table name
+
+##### Pole Table 
+Name | Type | Description
+--- | --- | --- |
+pole_id | *int*| table key
+pole_stencil | *string*| unique, pole stencil / common name identifier 
+
+The following example displays a limited portion of the data retrieved from the API. The actual result will have more than 5 elements.
+```
+[
+	{
+		"pole_id" : 10,
+		"pole_stencil" : "CI 5/5"
+	},
+	{
+		"pole_id" : 11,
+		"pole_stencil" : "CI 0/I"
+	},
+	{
+		"pole_id" : 12,
+		"pole_stencil" : "CI 0/2"
+	},
+	{
+		"pole_id" : 13,
+		"pole_stencil" : "CI 0/3"
+	},
+	{
+		"pole_id" : 14,
+		"pole_stencil" : "CI 0/4"
+	}
+]
+```
+
+##### Pole Drawings Table 
+Name | Type | Description
+--- | --- | --- |
+pole_drawings_id | *int* | table key
+pole_id | *int* | pole table key
+drawing_id | *int* | drawing table key
+
+The following example displays a limited portion of the data retrieved from the API. The actual result will have more than 5 elements.
+```
+```
+
+
+##### Line Table 
+Name | Type | Description
+--- | --- | --- |
+line_id | *int* | line table key
+line_number | *int* | line number, unique
+line_name | *string* | common name for line
+line_abbreviation | *string* | abbreviation for line_name / common name
+
+The following example displays a limited portion of the data retrieved from the API. The actual result will have more than 5 elements.
+```
+[
+	{
+		"line_id" : 1,
+		"line_number" : 101,
+		"line_name" : "Stimson-Camano",
+		"line_abbreviation" : "CI"
+	},
+	{
+		"line_id" : 2,
+		"line_number" : 102,
+		"line_name" : "Lake Goodwin",
+		"line_abbreviation" : "LG"
+	},
+	{
+		"line_id" : 3,
+		"line_number" : 103,
+		"line_name" : "TULALIP",
+		"line_abbreviation" : "WM"
+	},
+	{
+		"line_id" : 4,
+		"line_number" : 104,
+		"line_name" : "Snohomish-East Marysville",
+		"line_abbreviation" : "S-EM"
+	},
+	{
+		"line_id" : 6,
+		"line_number" : 106,
+		"line_name" : "Snohomish-Delta",
+		"line_abbreviation" : "S-D"
+	}
+]
+```
+
+
+##### Drawings Table 
+Name | Type | Description
+--- | --- | --- |
+drawing_id | *int* | table key
+drawing_name | *string* | name of drawing starting with a "T"
+drawing_title | *string* | title of drawing
+revision_number | *int* | positive integer of drawing revision
+
+The following example displays a limited portion of the data retrieved from the API. The actual result will have more than 5 elements.
+
+```
+[
+	{
+		"drawing_id" : 5,
+		"drawing_name" : "T3A-13C",
+		"drawing_title" : "Original Plan and Profile Sheet 5",
+		"revision_number" : "0",
+		"revision_date" : "1966-01-07"
+	},
+	{
+		"drawing_id" : 11,
+		"drawing_name" : "TA-15",
+		"drawing_title" : "Original Plan and Profile Sheet 11",
+		"revision_number" : "1",
+		"revision_date" : "2014-10-14"
+	},
+	{
+		"drawing_id" : 12,
+		"drawing_name" : "TA-16",
+		"drawing_title" : "Original Plan and Profile Sheet 12",
+		"revision_number" : "0",
+		"revision_date" : "1966-01-07"
+	},
+	{
+		"drawing_id" : 13,
+		"drawing_name" : "TA-17",
+		"drawing_title" : "Original Plan and Profile Sheet 13",
+		"revision_number" : "0",
+		"revision_date" : "1966-01-07"
+	},
+	{
+		"drawing_id" : 14,
+		"drawing_name" : "TA-18",
+		"drawing_title" : "Original Plan and Profile Sheet 14",
+		"revision_number" : "0",
+		"revision_date" : "1966-01-07"
+	}
+]
+```
+
 ### POST /admin
 ```
 POST http://localhost:3000/admin
@@ -19,8 +285,7 @@ Name | Type | Description
 --- | --- | --- |
 query | *string*| user text query
 api_key | *string*| valid api key
-operation | *string*| "delete", "insert" (incomplete), or "update" (incomplete). Only one modify operation permitted 
-
+operation | *string*| "delete" is the only operation implemented
 ```
 {
 	"query": "string",

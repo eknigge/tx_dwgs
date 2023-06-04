@@ -298,8 +298,7 @@ margin: 20rem;
 }
 
 .table-selector {
-  background-color: none;
-  transition: background-color 0.5s ease;
+  transition: 0.1s ease;
 }
 
 .table-selector.active {
@@ -308,10 +307,11 @@ margin: 20rem;
   row-gap: 1rem;
   align-items: center;
   justify-content: center;
-  background-color: var(--white);
+  background-color: var(--transparent-white);
   padding: .5rem;
   padding-top: .25rem;
   border-radius: 1rem;
+  transition: 0.3s ease;
 }
 
 .table-btns {

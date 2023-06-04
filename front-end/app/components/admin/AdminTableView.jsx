@@ -37,7 +37,15 @@ const AdminTableView = () => {
           ...columnKeys.map((key) => ({
             title: key.replace(/_/g, ' ').toUpperCase(),
             dataIndex: key,
-            sorter: (a, b) => a[key].localeCompare(b[key]),
+            sorter: (a, b) => {
+              const aValue = a[key]
+              const bValue = b[key]
+              if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return aValue - bValue
+              } else {
+                return aValue.localeCompare(bValue)
+              }
+            },
             key,
             editable: true
           }))]

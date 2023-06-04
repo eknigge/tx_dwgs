@@ -288,7 +288,12 @@ margin: 20rem;
   padding-top: .5rem;
 }
 
-.table-selector-active {
+.table-selector {
+  background-color: none;
+  transition: background-color 0.5s ease;
+}
+
+.table-selector.active {
   display: flex;
   flex-direction: column;
   row-gap: 1rem;

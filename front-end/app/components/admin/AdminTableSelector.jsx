@@ -16,15 +16,15 @@ const AdminTableSelector = ({ onButtonClick }) => {
   }
 
   const tables = [
-    { name: 'Pole', db_name: 'pole' }, { name: 'Pole Drawings', db_name: 'pole_drawings' },
-    { name: 'Line', db_name: 'line' }, { name: 'Drawings', db_name: 'drawings' }
+    { name: 'Pole', db_name: 'pole' }, { name: 'Drawings', db_name: 'drawings' },
+    { name: 'Pole Drawings', db_name: 'pole_drawings' }, { name: 'Line', db_name: 'line' }
   ]
 
   return (
     <div className='table-selector-container'>
       {open
         ? (
-          <div className="table-selector-active">
+          <div className="table-selector active">
             <button className='select-btn select-btn-open' onClick={toggle}>
               <p className="select-btn-text">Cancel Select</p>
               <AiOutlineCaretUp className='select-btn-icon'/>
@@ -41,7 +41,7 @@ const AdminTableSelector = ({ onButtonClick }) => {
           </div>
           )
         : (
-            <div>
+            <div className='table-selector'>
               <button className='select-btn' onClick={toggle}>
                 <p className="select-btn-text">Select Table</p>
                 <AiOutlineCaretRight className='select-btn-icon' />

@@ -84,10 +84,7 @@ const AdminTableView = () => {
 
   const handleSave = (record) => {
     const row = data.find((item) => item.id === record.id)
-    // console.log(data)
-    console.log(record)
-    console.log('record id: ' + record)
-    // console.log(row)
+    console.log('Edit record: ', { ...record })
     if (!row) {
       message.error('Invalid row!')
       return

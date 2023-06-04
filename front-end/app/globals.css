@@ -187,6 +187,26 @@ font-style: italic;
   outline: none;
 }
 
+.action-btn-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions-column {
+  text-align: center;
+  width: 10rem;
+}
+
+.action-btn {
+  height: 100%;
+}
+
+.action-btn-icon {
+  font-size: 1.2rem;
+}
+
 /* GENERIC WARNING TEXT CLASS */
 .warning-text {
   color: var(--warning-text);

@@ -4,8 +4,10 @@ import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
 import AdminTableSelector from './AdminTableSelector'
+import { AiFillDelete, AiFillEdit, AiFillSave, AiFillCloseCircle } from 'react-icons/ai'
 
 const AdminTableView = () => {
+  const [table, setTable] = useState('')
   const [data, setData] = useState([])
   const [columns, setColumns] = useState([])
   const [loading, setLoading] = useState(false)
@@ -14,9 +16,10 @@ const AdminTableView = () => {
   const [apiKey, setApiKey] = useState('')
   const [editingKey, setEditingKey] = useState('')
 
-  const handleTableSelection = (table) => {
-    console.log('Load data for table: ' + table)
-    loadData(table)
+  const handleTableSelection = (tableName) => {
+    console.log('Load data for table: ' + tableName)
+    setTable(tableName)
+    loadData(tableName)
   }
 
   const loadData = async (table) => {
@@ -59,12 +62,13 @@ const AdminTableView = () => {
   }
 
   const handleDelete = async (record) => {
+    console.log(apiKey)
     if (apiKey.length > 0) {
       const deleteProp = Object.keys(record)[1]
       const deleteValue = record[deleteProp]
       console.log(deleteValue)
       await DeleteRecord(apiKey, deleteValue)
-      await loadData()
+      await loadData(table)
     } else {
       message.error('Enter an API key to delete a record.')
     }
@@ -114,37 +118,50 @@ const AdminTableView = () => {
     {
       title: 'Actions',
       dataIndex: 'actions',
+      className: 'actions-column',
       render: (_, record) => {
         const editable = isEditing(record)
 
         return editable
           ? (
-          // Render save and cancel links for editing
-          <span>
-            <Button type='link' onClick={() => handleSave(record)}>Save</Button>
-            <Popconfirm
-              title="Are you sure you want to cancel?"
-              onConfirm={cancel}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type='link' danger>Cancel</Button>
-            </Popconfirm>
-          </span>
+              // Render save and cancel links for editing
+              <span className='action-btn-container'>
+                <Button className='action-btn' type='link' onClick={() => handleSave(record)}>
+                  <AiFillSave className='action-btn-icon' />
+                  <p className="action-btn-text">Save</p>
+                </Button>
+                <Popconfirm
+                  title="Are you sure you want to cancel?"
+                  onConfirm={cancel}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className='action-btn' type='link' danger>
+                    <AiFillCloseCircle className='action-btn-icon' />
+                    <p className="action-btn-text">Cancel</p>
+                  </Button>
+                </Popconfirm>
+              </span>
             )
           : (
-          // Render edit and delete links for non-editing
-          <span>
-            <Button type='link'onClick={() => edit(record)}>Edit</Button>
-            <Popconfirm
-              title="Are you sure you want to delete this record?"
-              onConfirm={() => handleDelete(record)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type='link' danger>Delete</Button>
-            </Popconfirm>
-          </span>
+              // Render edit and delete links for non-editing
+              <span className='action-btn-container'>
+                <Button className='action-btn' type='link'onClick={() => edit(record)}>
+                  <AiFillEdit className='action-btn-icon' />
+                  <p className="action-btn-text">Edit</p>
+                </Button>
+                <Popconfirm
+                  title="Are you sure you want to delete this record?"
+                  onConfirm={() => handleDelete(record)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className='action-btn' type='link' danger>
+                    <AiFillDelete className='action-btn-icon' />
+                    <p className="action-btn-text">Delete</p>
+                  </Button>
+                </Popconfirm>
+              </span>
             )
       }
     }
@@ -181,7 +198,8 @@ const AdminTableView = () => {
 
       {noResultsFound
         ? <p className='warning-text'>No Results Found</p>
-        : null}
+        : null
+      }
 
       {data.length === 0
         ? null

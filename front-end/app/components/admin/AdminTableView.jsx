@@ -1,12 +1,11 @@
 'use client'
-import { React, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { React, useState } from 'react'
 import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
+import AdminTableSelector from './AdminTableSelector'
 
-const AdminView = () => {
-  const [table, setTable] = useState('')
+const AdminTableView = () => {
   const [data, setData] = useState([])
   const [columns, setColumns] = useState([])
   const [loading, setLoading] = useState(false)
@@ -15,7 +14,10 @@ const AdminView = () => {
   const [apiKey, setApiKey] = useState('')
   const [editingKey, setEditingKey] = useState('')
 
-  const router = useRouter()
+  const handleTableSelection = (table) => {
+    console.log('Load data for table: ' + table)
+    loadData(table)
+  }
 
   const loadData = async (table) => {
     setNoResultsFound(false)
@@ -23,7 +25,7 @@ const AdminView = () => {
     setLoading(true)
 
     try {
-      const res = await FetchTableData('drawings')
+      const res = await FetchTableData(table)
       setData(res)
 
       if (res.length > 0) {
@@ -164,18 +166,10 @@ const AdminView = () => {
     }
   })
 
-  useEffect(() => {
-    loadData()
-    if (router.isReady) {
-      const { query } = router
-      console.log(query)
-      setTable(router.query)
-      console.log(table)
-    }
-  }, [router.isReady])
-
   return (
     <>
+      <AdminTableSelector onButtonClick={handleTableSelection} />
+
       <form className='search-form' action='' onSubmit={handleSubmit}>
         <input
           type='password'
@@ -259,4 +253,4 @@ const EditableCell = ({
   )
 }
 
-export default AdminView
+export default AdminTableView

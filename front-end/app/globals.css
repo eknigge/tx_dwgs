@@ -114,7 +114,7 @@ body {
 .page-title {
   text-align: center;
   font-size: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: normal;
 }
 
@@ -264,13 +264,19 @@ margin: 20rem;
 
 /* TABLE SELECTOR */
 .table-selector-container {
+  margin-bottom: 1rem;
+  padding-top: .5rem;
+}
+
+.table-selector-active {
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
   align-items: center;
   justify-content: center;
   background-color: var(--white);
-  padding: 1rem 2rem 2rem 2rem;
+  padding: .5rem;
+  padding-top: .25rem;
   border-radius: 1rem;
 }
 
@@ -300,6 +306,44 @@ margin: 20rem;
   text-decoration: underline;
   font-size: 1.2rem;
 }
+
+.select-btn {
+  width: 10rem;
+  height: 2rem;
+  background-color: var(--logo-green);
+  border: none;
+  border-radius: .25rem;
+  font-size: 1rem;
+  display: grid;
+  grid-template-areas: "text text icon";
+  justify-content: center;
+  align-items: center;
+}
+
+.select-btn:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.select-btn:active {
+  background-color: var(--logo-green);
+  text-decoration: underline;
+  font-size: 1.2rem;
+}
+
+.select-btn-open {
+  background-color: var(--warning-text);
+}
+
+.select-btn-text {
+  grid-area: text;
+}
+
+.select-btn-icon {
+  grid-area: icon;
+  font-size: 1.2rem;
+}
+
 
 /* TARGET MONITORS */
 @media (min-width: 768px) {

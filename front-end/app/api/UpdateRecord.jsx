@@ -2,8 +2,18 @@ import { message } from 'antd'
 
 export const UpdateRecord = async (apiKey, table, record) => {
   console.log('Updating record: ', record)
+
+  const endpointIdentifier = (table) => {
+    if (table === 'pole_drawings') {
+      return 'drawings'
+    } else {
+      return table
+    }
+  }
+
   try {
-    const response = await fetch(`http://localhost:3000/update_${table}`, {
+    const endpoint = endpointIdentifier(table)
+    const response = await fetch(`http://localhost:3000/update_${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -16,7 +26,7 @@ export const UpdateRecord = async (apiKey, table, record) => {
     })
     const res = await response.text()
     console.log('Update Response: ' + res)
-    if (res === `${table} table updated`) {
+    if (res === `${table} table updated` || response.ok) {
       message.success('Record updated successfully.')
     } else if (res === 'Bad API Key') {
       message.error('Bad API Key')

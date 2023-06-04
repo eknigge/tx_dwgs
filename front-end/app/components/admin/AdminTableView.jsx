@@ -34,9 +34,11 @@ const AdminTableView = () => {
       if (res.length > 0) {
         const columnKeys = Object.keys(res[0])
         const dynamicColumns = [
-          ...columnKeys.map((key) => ({
+          ...columnKeys.map((key, index) => ({
             title: key.replace(/_/g, ' ').toUpperCase(),
             dataIndex: key,
+            key,
+            editable: index !== 0,
             sorter: (a, b) => {
               const aValue = a[key]
               const bValue = b[key]
@@ -45,9 +47,7 @@ const AdminTableView = () => {
               } else {
                 return aValue.localeCompare(bValue)
               }
-            },
-            key,
-            editable: true
+            }
           }))]
         setColumns(dynamicColumns)
       } else {
@@ -96,7 +96,9 @@ const AdminTableView = () => {
   const isEditing = (record) => record.id === editingKey
 
   const edit = (record) => {
+    console.log('Editing: ', record.id)
     setEditingKey(record.id)
+    // setEditingKey(`record.${table}_id`)
   }
 
   const cancel = () => {
@@ -214,6 +216,7 @@ const AdminTableView = () => {
                   defaultPageSize: 10,
                   showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
                 }}
+                rowKey='key'
               />
           )
       }
@@ -236,9 +239,10 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
+  // console.log(title)
   return (
     <td {...restProps}>
-      {editing
+      {editing && dataIndex !== `record.${dataIndex}`
         ? (
             // Render editable cell for editing
             <div>

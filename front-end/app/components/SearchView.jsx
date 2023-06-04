@@ -56,7 +56,7 @@ const SearchView = () => {
           onChange={text => setQuery(text.target.value)}
           placeholder='Search the database'
         />
-        <button type='submit' className='submit-btn'>Search</button>
+        <button type='submit' className='btn btn-standard'>Search</button>
       </form>
 
       {noResultsFound

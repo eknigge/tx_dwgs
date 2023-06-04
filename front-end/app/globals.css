@@ -2,13 +2,17 @@
 
   /* COLORS */
   /* Text */
-  --warning-text: rgb(255, 0, 0);
+  --warning: rgb(255, 0, 0);
+  --warning-secondary: #ff5757;
+  --alert: #fcba03;
 
   /* General */
   --logo-green: #14A484;
+  --bright-green: #36c45b;
   --black: #000000;
   --white: #FFFFFF;
-  --blue: #0000ff;
+  --transparent-white: rgba(255, 255, 255, .75);
+  --gray: #dbdbdb;
 }
 
 * {
@@ -23,6 +27,32 @@ body {
   background: linear-gradient(0deg, rgba(18, 136, 36, 0.1), rgba(10, 118, 37, 0.1)), url('../public/images/background9.png') no-repeat center center fixed;
   background-size: cover;
   color: var(--logo-green);
+}
+
+
+/* GENERAL BUTTONS */
+.btn {
+  font-size: 1rem;
+  height: 2rem;
+  width: 10rem;
+  border: none;
+  border-radius: .2rem;
+}
+
+.btn:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.btn:active {
+  font-size: 1.1rem;
+}
+
+.btn-standard {
+  background-color: var(--logo-green);
+}
+
+.btn-cancel {
+  background-color: var(--alert);
 }
 
 
@@ -141,27 +171,6 @@ body {
   border-style: solid;
 }
 
-.submit-btn {
-  width: 10rem;
-  height: 2rem;
-  background-color: var(--logo-green);
-  border-color: var(--logo-green);
-  border-style: solid;
-  border-radius: .25rem;
-  font-size: 1rem;
-}
-
-.submit-btn:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.submit-btn:active {
-  background-color: var(--logo-green);
-  text-decoration: underline;
-  font-size: 1.2rem;
-}
-
 
 /* Result Table Component */
 .results-table {
@@ -209,7 +218,7 @@ font-style: italic;
 
 /* GENERIC WARNING TEXT CLASS */
 .warning-text {
-  color: var(--warning-text);
+  color: var(--warning);
   font-size: 1.2rem;
 }
 
@@ -311,53 +320,11 @@ margin: 20rem;
   row-gap: 1rem;
 }
 
-.table-btn {
-  width: 10rem;
-  height: 2rem;
-  background-color: var(--logo-green);
-  border-color: var(--logo-green);
-  border-style: solid;
-  border-radius: .25rem;
-  font-size: 1rem;
-}
-
-.table-btn:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.table-btn:active {
-  background-color: var(--logo-green);
-  text-decoration: underline;
-  font-size: 1.2rem;
-}
-
 .select-btn {
-  width: 10rem;
-  height: 2rem;
-  background-color: var(--logo-green);
-  border: none;
-  border-radius: .25rem;
-  font-size: 1rem;
   display: grid;
   grid-template-areas: "text text icon";
   justify-content: center;
   align-items: center;
-}
-
-.select-btn:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.select-btn:active {
-  background-color: var(--logo-green);
-  text-decoration: underline;
-  font-size: 1.2rem;
-}
-
-.select-btn-open {
-  background-color: var(--warning-text);
 }
 
 .select-btn-text {

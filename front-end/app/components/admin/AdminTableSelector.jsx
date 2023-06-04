@@ -25,14 +25,14 @@ const AdminTableSelector = ({ onButtonClick }) => {
       {open
         ? (
           <div className="table-selector active">
-            <button className='select-btn select-btn-open' onClick={toggle}>
+            <button className='btn btn-cancel select-btn' onClick={toggle}>
               <p className="select-btn-text">Cancel Select</p>
               <AiOutlineCaretUp className='select-btn-icon'/>
             </button>
             <div className="table-btns">
               {tables.map((table, index) => {
                 return (
-                  <button className='table-btn' key={index} onClick={() => handleSelection(table.db_name)}>
+                  <button className='btn btn-standard' key={index} onClick={() => handleSelection(table.db_name)}>
                     {table.name}
                   </button>
                 )
@@ -42,7 +42,7 @@ const AdminTableSelector = ({ onButtonClick }) => {
           )
         : (
             <div className='table-selector'>
-              <button className='select-btn' onClick={toggle}>
+              <button className='btn btn-standard select-btn' onClick={toggle}>
                 <p className="select-btn-text">Select Table</p>
                 <AiOutlineCaretRight className='select-btn-icon' />
               </button>

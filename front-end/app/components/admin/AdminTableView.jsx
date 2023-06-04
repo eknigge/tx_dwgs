@@ -89,6 +89,7 @@ const AdminTableView = () => {
     }
 
     UpdateRecord(apiKey, table, record)
+    setEditingKey('')
     loadData(table)
   }
 

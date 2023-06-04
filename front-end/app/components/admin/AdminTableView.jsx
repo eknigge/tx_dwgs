@@ -5,6 +5,7 @@ import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
 import AdminTableSelector from './AdminTableSelector'
 import { AiFillDelete, AiFillEdit, AiFillSave, AiFillCloseCircle } from 'react-icons/ai'
+import { UpdateRecord } from '@/app/api/UpdateRecord'
 
 const AdminTableView = () => {
   const [table, setTable] = useState('')
@@ -17,7 +18,6 @@ const AdminTableView = () => {
   const [editingKey, setEditingKey] = useState('')
 
   const handleTableSelection = (tableName) => {
-    console.log('Load data for table: ' + tableName)
     setTable(tableName)
     loadData(tableName)
   }
@@ -66,15 +66,13 @@ const AdminTableView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await loadData()
+    await loadData(table)
   }
 
   const handleDelete = async (record) => {
-    console.log(apiKey)
     if (apiKey.length > 0) {
       const deleteProp = Object.keys(record)[1]
       const deleteValue = record[deleteProp]
-      console.log(deleteValue)
       await DeleteRecord(apiKey, deleteValue)
       await loadData(table)
     } else {
@@ -84,28 +82,14 @@ const AdminTableView = () => {
 
   const handleSave = (record) => {
     const row = data.find((item) => item.id === record.id)
-    console.log('Edit record: ', { ...record })
+
     if (!row) {
       message.error('Invalid row!')
       return
     }
-    console.log('Valid row.')
-    const newData = [...data]
-    const index = newData.findIndex((item) => record.id === item.id)
 
-    if (index > -1) {
-      console.log(index)
-      // Update existing row
-      const item = newData[index]
-      newData.splice(index, 1, { ...item, ...row })
-      setData(newData)
-      setEditingKey('')
-    } else {
-      // Add new row
-      newData.push(row)
-      setData(newData)
-      setEditingKey('')
-    }
+    UpdateRecord(apiKey, table, record)
+    loadData(table)
   }
 
   const isEditing = (record) => record.id === editingKey

@@ -93,12 +93,11 @@ const AdminTableView = () => {
     loadData(table)
   }
 
-  const isEditing = (record) => record.id === editingKey
+  const isEditing = (record) => getFirstKeyValue(record) === editingKey
 
   const edit = (record) => {
-    console.log('Editing: ', record.id)
-    setEditingKey(record.id)
-    // setEditingKey(`record.${table}_id`)
+    const key = getFirstKeyValue(record)
+    setEditingKey(key)
   }
 
   const cancel = () => {
@@ -175,6 +174,12 @@ const AdminTableView = () => {
     }
   })
 
+  const getFirstKeyValue = (obj) => {
+    const firstKey = Object.keys(obj)[0]
+    const firstValue = obj[firstKey]
+    return firstValue
+  }
+
   return (
     <>
       <AdminTableSelector onButtonClick={handleTableSelection} />
@@ -198,6 +203,7 @@ const AdminTableView = () => {
         : (loading
             ? <span className='loader'></span>
             : <Table
+                rowKey={(record) => getFirstKeyValue(record)}
                 components={{
                   body: {
                     cell: EditableCell
@@ -216,7 +222,6 @@ const AdminTableView = () => {
                   defaultPageSize: 10,
                   showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
                 }}
-                rowKey='key'
               />
           )
       }
@@ -242,7 +247,7 @@ const EditableCell = ({
   // console.log(title)
   return (
     <td {...restProps}>
-      {editing && dataIndex !== `record.${dataIndex}`
+      {editing
         ? (
             // Render editable cell for editing
             <div>

@@ -13,6 +13,7 @@
   --white: #FFFFFF;
   --transparent-white: rgba(255, 255, 255, .75);
   --gray: #dbdbdb;
+  --blue: #0006b6;
 }
 
 * {
@@ -192,7 +193,7 @@ font-style: italic;
 }
 
 .edit-cell:focus {
-  border-bottom: 2px solid var(--logo-green);
+  border-bottom: 3px solid var(--logo-green);
   outline: none;
 }
 

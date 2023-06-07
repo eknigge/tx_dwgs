@@ -47,6 +47,12 @@ const SearchView = () => {
     loadData()
   }
 
+  const getFirstKeyValue = (obj) => {
+    const firstKey = Object.keys(obj)[0]
+    const firstValue = obj[firstKey]
+    return firstValue
+  }
+
   return (
     <>
       <form className='search-form' action='' onSubmit={handleSubmit}>
@@ -69,6 +75,7 @@ const SearchView = () => {
             loading
               ? <span className='loader'></span>
               : <Table
+                  rowKey={record => getFirstKeyValue(record)}
                   className='results-table'
                   dataSource={data}
                   columns={columns}

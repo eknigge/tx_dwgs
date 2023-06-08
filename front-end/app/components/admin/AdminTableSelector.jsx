@@ -11,7 +11,7 @@ const AdminTableSelector = ({ onButtonClick }) => {
 
   const handleSelection = (name) => {
     toggle()
-    console.log('Table selected: ' + name)
+    // console.log('Table selected: ' + name)
     onButtonClick(name)
   }
 

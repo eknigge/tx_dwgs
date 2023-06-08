@@ -172,6 +172,10 @@ body {
   border-style: solid;
 }
 
+.api-key-input {
+  margin-bottom: 1rem;
+}
+
 
 /* Result Table Component */
 .results-table {
@@ -214,10 +218,10 @@ font-style: italic;
 }
 
 .action-btn-icon {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
-/* GENERIC WARNING TEXT CLASS */
+/* GENERIC WARNING TEXT */
 .warning-text {
   color: var(--warning);
   font-size: 1.2rem;
@@ -299,7 +303,7 @@ margin: 20rem;
 }
 
 .table-selector {
-  transition: 0.1s ease;
+  transition: 0.05s ease;
 }
 
 .table-selector.active {

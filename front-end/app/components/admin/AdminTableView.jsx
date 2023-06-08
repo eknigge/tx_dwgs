@@ -16,6 +16,7 @@ const AdminTableView = () => {
   const [error, setError] = useState(false)
   const [apiKey, setApiKey] = useState('')
   const [editingKey, setEditingKey] = useState('')
+  const [originalRecord, setOriginalRecord] = useState(null)
 
   const handleTableSelection = (tableName) => {
     setTable(tableName)
@@ -64,11 +65,6 @@ const AdminTableView = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    await loadData(table)
-  }
-
   const handleDelete = async (record) => {
     if (apiKey.length > 0) {
       const deleteProp = Object.keys(record)[1]
@@ -80,28 +76,68 @@ const AdminTableView = () => {
     }
   }
 
-  const handleSave = (record) => {
-    const row = data.find((item) => item.id === record.id)
-
-    if (!row) {
-      message.error('Invalid row!')
-      return
-    }
-
-    UpdateRecord(apiKey, table, record)
-    setEditingKey('')
-    loadData(table)
-  }
-
   const isEditing = (record) => getFirstKeyValue(record) === editingKey
 
   const edit = (record) => {
     const key = getFirstKeyValue(record)
     setEditingKey(key)
+    setOriginalRecord(record)
+  }
+
+  const handleCellChange = (updatedRecord) => {
+    // console.log('updatedRecord: ', updatedRecord)
+    // console.log('originalRecord: ', originalRecord)
+    const updatedData = data.map((item) => {
+      if (getFirstKeyValue(item) === getFirstKeyValue(updatedRecord)) {
+        return updatedRecord
+      }
+      return item
+    })
+    setData(updatedData)
+  }
+
+  const updateObjectCreator = (record) => {
+    if (table === 'drawings') {
+      const updatedDrawing = {
+        drawing_name_existing: originalRecord.drawing_name,
+        drawing_name_new: record.drawing_name,
+        drawing_title: record.drawing_title,
+        revision_number: record.revision_number,
+        revision_date: record.revision_date
+      }
+      // console.log('Updated object: ', updatedObject)
+      return updatedDrawing
+    }
+    if (table === 'line') {
+      const updatedLine = {
+        line_number_existing: originalRecord.line_number,
+        line_number_new: record.line_number,
+        line_name: record.line_name,
+        line_abbreviation: record.line_abbreviation
+      }
+      return updatedLine
+    }
+
+    console.warn('NO TABLE MATCH, RECORD NOT UPDATED')
+    return record
+  }
+
+  const handleSave = async (record) => {
+    const updateObject = updateObjectCreator(record)
+    await UpdateRecord(apiKey, table, updateObject)
+    cancel()
   }
 
   const cancel = () => {
     setEditingKey('')
+    setOriginalRecord(null)
+    loadData(table)
+  }
+
+  const getFirstKeyValue = (obj) => {
+    const firstKey = Object.keys(obj)[0]
+    const firstValue = obj[firstKey]
+    return firstValue
   }
 
   const columnsWithActions = [
@@ -117,21 +153,21 @@ const AdminTableView = () => {
           ? (
               // Render save and cancel links for editing
               <span className='action-btn-container'>
-                <Button className='action-btn' type='link' onClick={() => handleSave(record)}>
-                  <AiFillSave className='action-btn-icon' />
-                  <p className="action-btn-text">Save</p>
-                </Button>
                 <Popconfirm
-                  title="Are you sure you want to cancel?"
-                  onConfirm={cancel}
-                  okText="Yes"
-                  cancelText="No"
+                  title='Are you sure you want to save?'
+                  onConfirm={() => handleSave(record)}
+                  okText='Yes'
+                  cancelText='No'
                 >
-                  <Button className='action-btn' type='link' danger>
-                    <AiFillCloseCircle className='action-btn-icon' />
-                    <p className="action-btn-text">Cancel</p>
+                  <Button className='action-btn action-btn-save' type='link'>
+                    <AiFillSave className='action-btn-icon' />
+                    <p className='action-btn-text'>Save</p>
                   </Button>
                 </Popconfirm>
+                <Button className='action-btn' type='link' onClick={cancel} danger>
+                  <AiFillCloseCircle className='action-btn-icon' />
+                  <p className='action-btn-text'>Cancel</p>
+                </Button>
               </span>
             )
           : (
@@ -139,17 +175,17 @@ const AdminTableView = () => {
               <span className='action-btn-container'>
                 <Button className='action-btn' type='link'onClick={() => edit(record)}>
                   <AiFillEdit className='action-btn-icon' />
-                  <p className="action-btn-text">Edit</p>
+                  <p className='action-btn-text'>Edit</p>
                 </Button>
                 <Popconfirm
-                  title="Are you sure you want to delete this record?"
+                  title='Are you sure you want to delete this record?'
                   onConfirm={() => handleDelete(record)}
-                  okText="Yes"
-                  cancelText="No"
+                  okText='Yes'
+                  cancelText='No'
                 >
                   <Button className='action-btn' type='link' danger>
                     <AiFillDelete className='action-btn-icon' />
-                    <p className="action-btn-text">Delete</p>
+                    <p className='action-btn-text'>Delete</p>
                   </Button>
                 </Popconfirm>
               </span>
@@ -169,29 +205,22 @@ const AdminTableView = () => {
         record,
         dataIndex: column.dataIndex,
         title: column.title,
-        editing: isEditing(record)
+        editing: isEditing(record),
+        handleCellChange
       })
     }
   })
-
-  const getFirstKeyValue = (obj) => {
-    const firstKey = Object.keys(obj)[0]
-    const firstValue = obj[firstKey]
-    return firstValue
-  }
 
   return (
     <>
       <AdminTableSelector onButtonClick={handleTableSelection} />
 
-      <form className='search-form' action='' onSubmit={handleSubmit}>
-        <input
-          type='password'
-          className='searchbar'
-          onChange={text => setApiKey(text.target.value)}
-          placeholder='Enter API Key'
-        />
-      </form>
+      <input
+        type='password'
+        className='searchbar api-key-input'
+        onChange={text => setApiKey(text.target.value)}
+        placeholder='Enter API Key'
+      />
 
       {noResultsFound
         ? <p className='warning-text'>No Results Found</p>
@@ -206,7 +235,9 @@ const AdminTableView = () => {
                 rowKey={(record) => getFirstKeyValue(record)}
                 components={{
                   body: {
-                    cell: EditableCell
+                    cell: (props) => (
+                      <EditableCell {...props} handleCellChange={handleCellChange} />
+                    )
                   }
                 }}
                 className='results-table'
@@ -242,9 +273,16 @@ const EditableCell = ({
   record,
   index,
   children,
+  handleCellChange,
   ...restProps
 }) => {
-  // console.log(title)
+  const handleChange = (event) => {
+    const updatedRecord = { ...record }
+    const value = event.target.textContent
+    updatedRecord[dataIndex] = value
+    handleCellChange(updatedRecord) // Call the callback function
+  }
+
   return (
     <td {...restProps}>
       {editing
@@ -258,7 +296,14 @@ const EditableCell = ({
                   )
                 : (
                 // Render input for other editable columns
-                <div className='edit-cell' suppressContentEditableWarning contentEditable>{record[dataIndex]}</div>
+                <div
+                  className='edit-cell'
+                  suppressContentEditableWarning
+                  contentEditable
+                  onBlur={handleChange}
+                >
+                  {record[dataIndex]}
+                </div>
                   )}
             </div>
           )

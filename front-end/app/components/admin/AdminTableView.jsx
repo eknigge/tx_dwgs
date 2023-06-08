@@ -4,6 +4,7 @@ import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
 import AdminTableSelector from './AdminTableSelector'
+import AddRecord from './AddRecords'
 import { AiFillDelete, AiFillEdit, AiFillSave, AiFillCloseCircle } from 'react-icons/ai'
 import { UpdateRecord } from '@/app/api/UpdateRecord'
 
@@ -231,29 +232,32 @@ const AdminTableView = () => {
         ? null
         : (loading
             ? <span className='loader'></span>
-            : <Table
-                rowKey={(record) => getFirstKeyValue(record)}
-                components={{
-                  body: {
-                    cell: (props) => (
-                      <EditableCell {...props} handleCellChange={handleCellChange} />
-                    )
-                  }
-                }}
-                className='results-table'
-                dataSource={data}
-                columns={columnsWithEditableCells}
-                bordered
-                scroll={{
-                  x: 1
-                }}
-                pagination={{
-                  pageSizeOptions: ['10', '20', '50', '100'],
-                  showSizeChanger: true,
-                  defaultPageSize: 10,
-                  showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
-                }}
-              />
+            : <>
+                <AddRecord fields={columns} />
+                <Table
+                  rowKey={(record) => getFirstKeyValue(record)}
+                  components={{
+                    body: {
+                      cell: (props) => (
+                        <EditableCell {...props} handleCellChange={handleCellChange} />
+                      )
+                    }
+                  }}
+                  className='results-table'
+                  dataSource={data}
+                  columns={columnsWithEditableCells}
+                  bordered
+                  scroll={{
+                    x: 1
+                  }}
+                  pagination={{
+                    pageSizeOptions: ['10', '20', '50', '100'],
+                    showSizeChanger: true,
+                    defaultPageSize: 10,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
+                  }}
+                />
+              </>
           )
       }
 

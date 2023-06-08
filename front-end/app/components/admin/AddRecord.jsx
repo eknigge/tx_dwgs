@@ -23,7 +23,6 @@ const AddRecord = (fields) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Cool!')
   }
 
   const clearForm = () => {
@@ -32,7 +31,7 @@ const AddRecord = (fields) => {
   }
 
   const handleAdd = () => {
-    console.log('Record added.')
+    console.log('Run handleAdd.')
     clearForm()
   }
 
@@ -53,7 +52,7 @@ const AddRecord = (fields) => {
                 {labelArray.map((value, index) => (
                     <div key={index} className='add-form-field'>
                       <label className='add-field-label'>{value}:</label>
-                      <input className='add-field-input edit-cell' type="text" name="" id="" required />
+                      <input className='add-field-input edit-cell' type="text" name="" id={index} required />
                     </div>
                 ))}
               </div>

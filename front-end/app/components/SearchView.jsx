@@ -47,6 +47,12 @@ const SearchView = () => {
     loadData()
   }
 
+  const getFirstKeyValue = (obj) => {
+    const firstKey = Object.keys(obj)[0]
+    const firstValue = obj[firstKey]
+    return firstValue
+  }
+
   return (
     <>
       <form className='search-form' action='' onSubmit={handleSubmit}>
@@ -56,7 +62,7 @@ const SearchView = () => {
           onChange={text => setQuery(text.target.value)}
           placeholder='Search the database'
         />
-        <button type='submit' className='submit-btn'>Search</button>
+        <button type='submit' className='btn btn-standard'>Search</button>
       </form>
 
       {noResultsFound
@@ -69,6 +75,7 @@ const SearchView = () => {
             loading
               ? <span className='loader'></span>
               : <Table
+                  rowKey={record => getFirstKeyValue(record)}
                   className='results-table'
                   dataSource={data}
                   columns={columns}

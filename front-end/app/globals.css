@@ -393,6 +393,7 @@ margin: 20rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   row-gap: 1rem;
   column-gap: 1rem;
 }

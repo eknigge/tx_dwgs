@@ -4,7 +4,7 @@ import { Button, Table, Popconfirm, message } from 'antd'
 import { FetchTableData } from '../../api/FetchTableData'
 import { DeleteRecord } from '../../api/DeleteRecord'
 import AdminTableSelector from './AdminTableSelector'
-import AddRecord from './AddRecords'
+import AddRecord from './AddRecord'
 import { AiFillDelete, AiFillEdit, AiFillSave, AiFillCloseCircle } from 'react-icons/ai'
 import { UpdateRecord } from '@/app/api/UpdateRecord'
 

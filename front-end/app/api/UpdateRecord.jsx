@@ -1,6 +1,7 @@
 import { message } from 'antd'
 
 export const UpdateRecord = async (apiKey, table, record) => {
+  console.log('Updating Table: ', table)
   console.log('Updating record: ', record)
 
   const endpointIdentifier = (table) => {

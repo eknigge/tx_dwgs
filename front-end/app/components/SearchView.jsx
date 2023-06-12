@@ -1,81 +1,104 @@
-'use client';
-import { Table } from "antd";
-import { useEffect, useState } from "react";
+'use client'
+import { React, useState } from 'react'
+import { Table } from 'antd'
+import { FetchQueryData } from '../api/FetchQueryData'
 
 const SearchView = () => {
-  const [query, setQuery] = useState('');
-  const [data, setData] = useState([]);
-  const [columns, setColumns] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('')
+  const [data, setData] = useState([])
+  const [columns, setColumns] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [noResultsFound, setNoResultsFound] = useState(false)
+  const [error, setError] = useState(false)
+
+  const loadData = async () => {
+    setNoResultsFound(false)
+    setError(false)
+    setLoading(true)
+    try {
+      const response = await FetchQueryData(query)
+      setData(response)
+      setLoading(false)
+
+      // Get Column Headers
+      if (response.length > 0) {
+        const columnKeys = Object.keys(response[0])
+        const dynamicColumns = columnKeys.map((key) => ({
+          key,
+          title: <b>{key}</b>,
+          dataIndex: key,
+          className: 'results-table-header',
+          sorter: (a, b) => a[key].localeCompare(b[key])
+        }))
+        setColumns(dynamicColumns)
+      } else {
+        setNoResultsFound(true)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      setData([])
+      setLoading(false)
+      setError(true)
+    }
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    console.log("Query: " + query)
-    // setTimeout()  //Enable to show loading spinner
-    loadData();
-    console.log(data);
-    
-    setLoading(false);
-  };
-
-  const loadData = () => {
-    fetch(`http://localhost:3000/${query}`)
-    .then(res => res.json())
-    .then(data => setData(data))
-    .catch(err => console.error('Error: ' + err.message));
-
-    if (data.length > 0) {
-      loadCols(data);
-      setColumns(cols);
-    }
+    e.preventDefault()
+    loadData()
   }
 
-  // Pull column/field names
-  const cols = []
-  function loadCols(input) {
-    for (const key in input[0]) {
-      const col = {
-        key: key,
-        title: key.replace(/_/g, " ").toUpperCase(),
-        dataIndex: key,
-        sorter: (a, b) => a.key.localeCompare(b.key)
-      }
-      cols.push(col)
-    }
+  const getFirstKeyValue = (obj) => {
+    const firstKey = Object.keys(obj)[0]
+    const firstValue = obj[firstKey]
+    return firstValue
   }
-
-  // useEffect(() => {
-  //   handleSubmit;
-  // });
 
   return (
     <>
-      <form className="search-form" action="" onSubmit={handleSubmit}>
+      <form className='search-form' action='' onSubmit={handleSubmit}>
         <input
-          type="text"
-          className="searchbar"
+          type='text'
+          className='searchbar'
           onChange={text => setQuery(text.target.value)}
-          placeholder="Search the database"
+          placeholder='Search the database'
         />
-        <button type="submit" className="submit-btn">Search</button>
+        <button type='submit' className='btn btn-standard'>Search</button>
       </form>
 
+      {noResultsFound
+        ? <p className='warning-text'>No Results Found</p>
+        : null}
 
-      {loading ? 
-        <span className="loader"></span> : 
-        <Table
-        className="results-table"
-        dataSource={data}
-        columns={columns}
-        scroll={{
-          x: 1,
-        }}
-      />
+      {data.length === 0
+        ? null
+        : (
+            loading
+              ? <span className='loader'></span>
+              : <Table
+                  rowKey={record => getFirstKeyValue(record)}
+                  className='results-table'
+                  dataSource={data}
+                  columns={columns}
+                  rowClassName={() => 'results-table-row'}
+                  scroll={{
+                    x: 1
+                  }}
+                  pagination={{
+                    pageSizeOptions: ['10', '20', '50', '100'], // Specify the options for items per page
+                    showSizeChanger: true, // Show the page size changer component
+                    defaultPageSize: 10, // Set the default number of items per page
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results` // Display the total number of results
+                  }}
+                />
+          )
       }
-      
+
+      {error
+        ? <p className='warning-text'>Error fetching data, please try again.</p>
+        : null
+      }
     </>
   )
-};
+}
 
-export default SearchView;
+export default SearchView

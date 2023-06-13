@@ -177,10 +177,79 @@ const updateLineTable = function (line_number_existing, line_number_new,
 	`
 }
 
+// INSERT pole table
+const insertPoleTable = (newStencil) => {
+	return `
+	INSERT INTO pole (pole_id, pole_stencil)
+	VALUES (
+		(SELECT * FROM (
+			select pole_id + 1 AS new_id FROM pole
+			ORDER BY pole_id DESC LIMIT 1
+		) tmpTable),
+		("${newStencil}")
+	);`
+}
 
+// INSERT line table
+const insertLineTable = (lineNumber, lineName,
+	lineAbbreviation) => {
+	return `
+		INSERT INTO line (line_id,
+			line_number,
+			line_name,
+			line_abbreviation)
+		VALUES (
+			((SELECT * FROM (
+				SELECT line_id +1 AS new_line_id FROM LINE
+				ORDER BY line_id DESC LIMIT 1) tmpTable)),
+		(${lineNumber}),
+		("${lineName}"),
+		("${lineAbbreviation}")
+		);`
+}
+
+// INSERT drawings table
+const insertDrawingsTable = (
+	drawingName,
+	drawingTitle,
+	lineId) => {
+	return `INSERT INTO drawings (drawing_id,
+			drawing_name, drawing_title,
+			revision_number, revision_date,
+			line_id)
+		VALUES (
+			((SELECT * FROM (
+				SELECT drawing_id +1 AS new_drawing_id FROM drawings
+				ORDER BY drawing_id DESC LIMIT 1) tmpTable)),
+			("${drawingName}"),
+			("${drawingTitle}"),
+			(0),
+			(SELECT CURRENT_DATE()),
+			(${lineId})
+		);`
+}
+
+// INSERT into pole_drawings table
+const insertPoleDrawingsTable = (
+	poleId,
+	drawingId
+) => {
+	return `
+	INSERT INTO pole_drawings (pole_drawings_id,
+		pole_id, drawing_id)
+	VALUES (
+		((SELECT * FROM (
+			SELECT pole_drawings_id +1 AS new_pole_drawings_id FROM pole_drawings
+			ORDER BY pole_drawings_id DESC LIMIT 1) tmpTable)),
+    (${poleId}),
+    (${drawingId})
+	); `
+}
 
 module.exports = {
 	poleQuery, lineQuery, dwgQuery, apiKeyQuery, deletePole,
 	deleteDwg, deleteLine, addLogEvent, updateUserLogging, getPoleTable, getPoleDrawingsTable,
-	getLineTable, getDrawingsTable, updatePoleId, updateDrawings, updateLineTable
+	getLineTable, getDrawingsTable, updatePoleId, updateDrawings, updateLineTable,
+	insertPoleDrawingsTable, insertLineTable, insertDrawingsTable,
+	insertPoleTable
 };

@@ -4,7 +4,7 @@ const port = 3000;
 const connection = require('./dbConnection');
 app.use(express.json());
 const queries = require('./sqlQueries');
-
+const pool = require('./dbPoolConnection');
 const cors = require('cors')
 app.use(cors())
 
@@ -357,3 +357,86 @@ app.post('/update_line', (req, res) => {
 		})
 })
 
+// INSERT Endpoint
+
+app.post('/insert', (req, res) => {
+	let table = req.body.table_name;
+	let apiKey = req.body.api_key;
+	let apiQuery = apiKeyQuery(apiKey);
+
+	connection.query(apiQuery,
+		(err, results, fields) => {
+			// validate API key
+			if (results.length == 0) {
+				res.status(400).send('Bad API Key');
+				console.log('bad API Key');
+				return;
+				// validate table value
+			} else if (!(databaseTables.includes(table))) {
+				res.status(400).send(`Invalid Table ${table}`);
+				console.log(`Invalid Table ${table}`);
+				return;
+				// modify pole table
+			} else if (table === 'pole') {
+				let poleQuery = queries.insertPoleTable;
+				let newStencil = req.body.table_value.pole_stencil;
+
+				connection.query(poleQuery(newStencil),
+					(err, results, fields) => {
+						res.send('insert into pole table successful');
+					});
+
+				updateLoggingTable(poleQuery(newStencil), apiKey);
+				console.log(`Insert ${newStencil} into pole table`)
+				return;
+			} else if (table === 'drawings') {
+				let drawingQuery = queries.insertDrawingsTable;
+				let drawingName = req.body.table_value.drawing_name;
+				let drawingTitle = req.body.table_value.drawing_title;
+				let lineId = req.body.table_value.line_id;
+
+				connection.query(drawingQuery(drawingName, drawingTitle, lineId),
+					(err, results, fields) => {
+						res.send('insert into drawings table successful');
+					})
+
+				updateLoggingTable(drawingQuery(drawingName, drawingTitle, lineId), apiKey);
+				console.log(`Insert drawing name: ${drawingName},
+				drawing title: ${drawingTitle},
+				line id: ${lineId} into drawing table`);
+
+				return;
+			} else if (table === 'line') {
+				let lineQuery = queries.insertLineTable;
+				let lineNumber = req.body.table_value.line_number;
+				let lineName = req.body.table_value.line_name;
+				let lineAbbreviation = req.body.table_value.line_abbreviation;
+
+				connection.query(lineQuery(lineNumber, lineName, lineAbbreviation),
+					(err, results, fields) => {
+						res.send('insert into drawings table successful');
+					});
+
+				updateLoggingTable(lineQuery(lineNumber, lineName, lineAbbreviation), apiKey);
+				console.log(`Insert line number: ${lineNumber}, line name: ${lineName}
+				line abbreviation ${lineAbbreviation} into line table`);
+
+				return;
+			} else if (table === 'pole_drawings') {
+				let poleDrawingsQuery = queries.insertPoleDrawingsTable;
+				let poleId = req.body.table_value.pole_id;
+				let drawingId = req.body.table_value.drawing_id;
+
+				connection.query(poleDrawingsQuery(poleId, drawingId),
+					(err, results, fields) =>{
+						res.send('insert into pole_drawings table successful');
+					});
+
+				updateLoggingTable(poleDrawingsQuery(poleId, drawingId), apiKey);
+				console.log(`Insert pole id: ${poleId}, drawing id: ${drawingId}
+				into pole_drawings table`);
+
+				return;
+			}
+		})
+})

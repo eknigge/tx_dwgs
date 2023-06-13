@@ -21,6 +21,72 @@ drawings | drawing_id, drawing_name
 
 
 ## Requests
+### POST /insert
+```
+POST http://localhost:3000/insert
+```
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string* | valid api key
+table_name | *string* | name of table to modify "pole", "drawings", "line", or "pole_drawings"
+table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers). See example below, note that **all** fields must be included for update.
+
+
+**Pole Update**
+```
+{
+	"api_key": "string",
+	"table_name": "pole",
+	"table_value": {
+		"pole_stencil": "string"
+	}
+}
+```
+
+**Line Update**
+```
+{
+	"api_key": "string",
+	"table_name": "line",
+	"table_value": {
+		"line_number": "int",
+		"line_name": "string",
+		"line_abbreviation": "string"
+	}
+}
+```
+**Drawing Update**
+```
+{
+	"api_key": "string",
+	"table_name": "drawings",
+	"table_value": {
+		"drawing_name": "string",
+		"drawing_title": "string",
+		"line_id": "int"
+	}
+}
+```
+
+**Pole Drawings Update**
+```
+{
+	"api_key": "string",
+	"table_name": "pole_drawings",
+	"table_value": {
+		"pole_id": "int",
+		"drawing_id": "int"
+	}
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | OK
+400 | Error. *Description to detail issue.*
 ### POST /update_line
 ```
 POST http://localhost:3000/update_line

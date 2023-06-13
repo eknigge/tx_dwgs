@@ -72,7 +72,7 @@ const TableauVisualization = () => {
           <param name="filter" value="publish=yes" />
         </object>
 
-        <noscript>      
+        <noscript>
         <a href="#"><img alt="Drawing, Line, and Pole information"
           src="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;fi&#47;final_16862689625800&#47;Story1&#47;1_rss.png"
           style={{ border: 'none' }}

@@ -64,3 +64,20 @@ nodemon api.js
 ```
 
 All systems should be operational now. To conduct test queries, please refer to the API page. If you are running it on your local machine, open your browser and visit `http://localhost:3000/` to view the outcome of a sample query.
+
+### Environment Variables
+In order to execute the script, you'll need to generate a .env file and position it in the back-end script directory. The file should possess, at the very least, the subsequent values. Additional details may also be included.
+
+```
+HOST="localhost"
+USER="username"
+PASSWORD="password"
+DATABASE_NAME="mydb"
+```
+
+## Front-end
+To initiate the app in development mode, execute the command below. The selection of port 3001 avoids any potential conflict with the default port of the back-end API.
+
+```
+npx next dev -p 3001
+```

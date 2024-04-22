@@ -146,4 +146,66 @@ WHERE line_id =
         WHERE line_number = 103)
 	tmpTable);
 
-select * from line limit 10;
+-- INSERT into pole table
+INSERT INTO pole (pole_id, pole_stencil)
+VALUES (
+	(SELECT * FROM (
+		select pole_id + 1 AS new_id FROM pole
+		ORDER BY pole_id DESC LIMIT 1
+    ) tmpTable),
+    ("NEW_STENCIL")
+);
+
+-- INSERT into line table
+INSERT INTO line (line_id, line_number, line_name, line_abbreviation)
+VALUES (
+	((SELECT * FROM (
+		SELECT line_id +1 AS new_line_id FROM LINE
+		ORDER BY line_id DESC LIMIT 1) tmpTable)),
+    (999),
+    ("NEW_LINE_NAME"),
+    ("ABBREVIATION")
+);
+
+-- INSERT into drawings table
+INSERT INTO drawings (drawing_id, drawing_name,
+	drawing_title, revision_number,
+    revision_date, line_id)
+VALUES (
+	((SELECT * FROM (
+		SELECT drawing_id +1 AS new_drawing_id FROM drawings
+		ORDER BY drawing_id DESC LIMIT 1) tmpTable)),
+    ("new drawing name"),
+    ("t-999"),
+    (0),
+    (SELECT CURRENT_DATE()),
+    (555)
+);
+
+-- INSERT into pole_drawings table
+INSERT INTO pole_drawings (pole_drawings_id, pole_id, drawing_id)
+VALUES (
+	((SELECT * FROM (
+		SELECT pole_drawings_id +1 AS new_pole_drawings_id FROM pole_drawings
+		ORDER BY pole_drawings_id DESC LIMIT 1) tmpTable)),
+    (99),
+    (55)
+);
+
+-- test queries for INSERT 
+select * from pole_drawings order by pole_drawings_id desc limit 20;
+select * from pole order by pole_id desc limit 10;
+select * from drawings order by drawing_id desc limit 10;
+select * from line order by line_id desc limit 10;
+
+
+
+INSERT INTO pole_drawings (pole_drawings_id,
+                pole_id, drawing_id)
+        VALUES (
+                ((SELECT * FROM (
+                        SELECT pole_drawings_id +1 AS new_pole_drawings_id FROM pole_drawings
+                        ORDER BY pole_drawings_id DESC LIMIT 1) tmpTable)),
+    (30),
+    (40)
+        );

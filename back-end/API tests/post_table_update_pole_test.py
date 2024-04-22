@@ -5,7 +5,7 @@ data = {
     'api_key': 'Iesh7ooTh3aegh3Faer7xeej1eaChie2Shiechae',
     'table_name': 'pole',
     'table_value': {
-        'pole_id': 11,
+        'pole_id': 12,
         'pole_stencil': "new stencil name"
     }
 }

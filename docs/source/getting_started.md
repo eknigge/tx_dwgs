@@ -10,7 +10,9 @@ Installation instructions are provided for Windows, but may work in other enviro
 - Next.js 13+<br>
 - MySQL Server 8+
 
-## Sphinx Build
+## Sphinx Documentation
+Unfortunately, the documentation for this project is not pre-compiled. This is done to save space and reduce clutter. Creating a local working copy is not difficult. Simply follow the scripts below to generate the build files, and then open the `index` file in your web browser to access the project documentation. A brief summary can be found in the `readme.md` file of the repository, but it is much more limited in scope compared to the full documentation.
+
 To execute a `sphinx-build` you must install sphinx, the MyST extension, and the sphinx book theme. 
 
 Install Sphinx on Windows see [official docs](https://www.sphinx-doc.org/en/master/usage/installation.html) for other operating systems.
@@ -38,13 +40,17 @@ python -m sphinx.cmd.build ./source/ ./build/
 ```
 
 ## Back-end
-To set up the back-end, you will need to have MySQL server, Express.js, and MySQL 2 installed in the back-end folder using the node package manager. Consult the MySQL installation page that applies to your operating system and hardware configuration for proper guidance.
+### Required Software
 
-```
-npm install [package_name]
-```
+To run the back-end, you will need to install the following software. All of the required software should be able to run on all operating systems and a variety of hardware configurations. 
 
-Ensure that the MySQL server is launched and confirm the existence of the `mydb` database. If it is absent, proceed to create it and input the pole data. Execute the below SQL scripts in the MySQL IDE query window in the specified order. Executing them in a different order may cause problems in the database population.
+- **MySQL**. Please refer to the MySQL installation page for installation instructions and software specific to your operating system.
+- **Node.js**. The Node runtime environment is necessary to run other middleware software applications. You can use the package manager `npm` to install individual packages, or navigate to the back-end directory and run the command `npm install` to install all dependent packages listed in `packages.json` and `packages-lock`.
+    - **Express.js**
+    - **MySQL2**
+
+### MySQL Database
+Ensure that the MySQL server is launched and confirm the existence of the `mydb` database. If it is absent, proceed to create it and input the pole data. Execute the below SQL scripts in the MySQL IDE query window in the order below. Executing them in a different order may cause problems with creating the database. 
 
 1. [create_database](../../back-end/MySQL/create_database.sql)
 2. [line_data_import](../../back-end/MySQL/line_data_import.sql)
@@ -53,7 +59,18 @@ Ensure that the MySQL server is launched and confirm the existence of the `mydb`
 5. [pole_details_data_import](../../back-end/MySQL/pole_details_data_import.sql)
 6. [linking_table_data_import](../../back-end/MySQL/linking_table_data_import.sql)
 
-From the command line start locate the back-end folder and start the Node.js server. 
+### Environment Variables
+To start the API, you'll need to generate a .env file and place it in the back-end script directory. The file should contain the login information for your MySQL server.
+
+```
+HOST="localhost"
+USER="username"
+PASSWORD="password"
+DATABASE_NAME="mydb"
+```
+### Start Middleware
+From the command line, navigate to the back-end folder and start the Node.js server. This will initiate the mySQL server connection and expose the API that connects and serves data from the database.
+
 ```
 node api.js
 ```
@@ -65,19 +82,13 @@ nodemon api.js
 
 All systems should be operational now. To conduct test queries, please refer to the API page. If you are running it on your local machine, open your browser and visit `http://localhost:3000/` to view the outcome of a sample query.
 
-### Environment Variables
-In order to execute the script, you'll need to generate a .env file and position it in the back-end script directory. The file should possess, at the very least, the subsequent values. Additional details may also be included.
-
-```
-HOST="localhost"
-USER="username"
-PASSWORD="password"
-DATABASE_NAME="mydb"
-```
 
 ## Front-end
-To initiate the app in development mode, execute the command below. The selection of port 3001 avoids any potential conflict with the default port of the back-end API.
+To start the app in development mode, run the command below in the front-end directory. Choosing port 3001 helps prevent any conflicts with the default port of the back-end API.
 
 ```
 npx next dev -p 3001
 ```
+
+## View the Site
+You can view the fully functional site in a web browser at `localhost:3001`.

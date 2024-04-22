@@ -22,6 +22,8 @@ drawings | drawing_id, drawing_name
 
 ## Requests
 ### POST /insert
+This endpoint will insert information into the database tables and should be used for adding new data.
+
 ```
 POST http://localhost:3000/insert
 ```
@@ -34,7 +36,7 @@ table_name | *string* | name of table to modify "pole", "drawings", "line", or "
 table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers). See example below, note that **all** fields must be included for update.
 
 
-**Pole Update**
+**Pole Insert**
 ```
 {
 	"api_key": "string",
@@ -45,7 +47,7 @@ table_value | *object* | key/values to update, must include unique identifier fo
 }
 ```
 
-**Line Update**
+**Line Insert**
 ```
 {
 	"api_key": "string",
@@ -57,7 +59,7 @@ table_value | *object* | key/values to update, must include unique identifier fo
 	}
 }
 ```
-**Drawing Update**
+**Drawing Insert**
 ```
 {
 	"api_key": "string",
@@ -70,7 +72,7 @@ table_value | *object* | key/values to update, must include unique identifier fo
 }
 ```
 
-**Pole Drawings Update**
+**Pole Drawings Insert**
 ```
 {
 	"api_key": "string",
@@ -118,7 +120,7 @@ Code | Description
 200 | OK
 400 | Error. *Description to detail issue.*
 
-### POST /update_drawings
+### POST /update_drawing
 ```
 POST http://localhost:3000/update_drawings
 ```
@@ -127,14 +129,14 @@ POST http://localhost:3000/update_drawings
 Name | Type | Description
 --- | --- | --- |
 api_key | *string* | valid api key
-table_name | *string* | name of table type to modify
+table_name | *string* | drawings
 table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers). See example below, note that **all** fields must be included for update.
 
 
 ```
 {
 	"api_key": "string",
-	"table_name": "string",
+	"table_name": "drawings",
 	"table_value": {
 		"drawing_name_existing": "string",
 		"drawing_name_new": "string",
@@ -160,14 +162,14 @@ POST http://localhost:3000/update_pole
 Name | Type | Description
 --- | --- | --- |
 api_key | *string* | valid api key
-table_name | *string* | name of table type to modify
+table_name | *string* | pole
 table_value | *object* | key/values to update, must include unique identifier for each table type, see [Unique Identifiers table](unique_identifiers)
 
 
 ```
 {
 	"api_key": "string",
-	"table_name": "string",
+	"table_name": "pole",
 	"table_value": {
 		"unique_identifier": "int",
 		"updated_field": "string"
@@ -182,6 +184,7 @@ Code | Description
 400 | Error. *Description to detail issue.*
 
 ### POST /tables
+This request returns all the table information for a requested table in JSON format. Refer to the database documentation for a list of tables.
 ```
 POST http://localhost:3000/tables
 ```
@@ -343,13 +346,15 @@ The following example displays a limited portion of the data retrieved from the 
 ```
 
 ### POST /admin
+Supports the removal of a single user text query for a pole, drawing, or line item. Removal of multiple items will require multiple requests.
+
 ```
 POST http://localhost:3000/admin
 ```
 #### Body
 Name | Type | Description
 --- | --- | --- |
-query | *string*| user text query
+query | *string*| user text query. supports removal of pole, drawing, and line items.
 api_key | *string*| valid api key
 operation | *string*| "delete" is the only operation implemented
 ```
@@ -522,6 +527,8 @@ Response result truncated.
 Making API calls in Python is straightforward. If you are working on your local machine, ensure that the Node.js and MySQL server are active. Run one of the scripts below, modifying the query parameter to experiment with various outputs.
 
 ### POST /
+This is a test endpoint that returns sample data from the database in JSON format. It can be used to validate that the back-end is functioning correctly and to test the request software.
+
 ```
 import requests
 

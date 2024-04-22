@@ -4,7 +4,7 @@ const port = 3000;
 const connection = require('./dbConnection');
 app.use(express.json());
 const queries = require('./sqlQueries');
-const pool = require('./dbPoolConnection');
+
 const cors = require('cors')
 app.use(cors())
 
@@ -97,6 +97,7 @@ app.post('/admin', (req, res) => {
 		})
 
 	// determine delete query
+	// async operation
 	userQuery = req.body.query;
 	for (const key in deleteQueries) {
 		let regex = new RegExp(key);
@@ -104,6 +105,8 @@ app.post('/admin', (req, res) => {
 			deleteQuery = deleteQueries[key](userQuery);
 		}
 	}
+
+	console.log(deleteQuery);
 
 	// log event
 	updateLoggingTable(deleteQuery, userKey)
@@ -251,7 +254,7 @@ const updateLoggingTable = (logQueryText, userKey) => {
 }
 
 // UPDATE endpoint drawings
-app.post('/update_drawings', (req, res) => {
+app.post('/update_drawing', (req, res) => {
 	let apiKey = req.body.api_key;
 	let tableName = req.body.table_name;
 	let tableValues = req.body.table_value;

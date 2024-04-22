@@ -1,12 +1,11 @@
 import requests
 
-url = 'http://localhost:3000/update_pole'
+url = 'http://localhost:3000/insert'
 data = {
-    'api_key': 'Iesh7ooTh3aegh3Faer7xeej1eaChie2Shiechae',
+    'api_key': 'caphie7chai2yaengooghiv7OuThiepie4kah2ku',
     'table_name': 'pole',
     'table_value': {
-        'pole_id': 11,
-        'pole_stencil': "new stencil name"
+        'pole_stencil': 'even newer pole'
     }
 }
 

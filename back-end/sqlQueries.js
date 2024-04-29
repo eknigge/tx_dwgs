@@ -48,7 +48,7 @@ const dwgQuery =
 const apiKeyQuery =
 	function (input) {
 		return `
-		SELECT valid FROM api_key
+		SELECT valid, permission FROM api_key
 		JOIN user_api_key on api_key.api_key_id = user_api_key.api_key_id
 		JOIN user ON user.user_id = user_api_key.user_id
 		WHERE key_value = "${input}"; `

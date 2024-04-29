@@ -8,6 +8,11 @@ const queries = require('./sqlQueries');
 const cors = require('cors')
 app.use(cors())
 
+// permission values - based on unix standard
+let readAPI = 4;
+let readWriteAPI = 6;
+let readWriteExecute = 7;
+
 // import queries
 let poleQuery = queries.poleQuery;
 let dwgQuery = queries.dwgQuery;
@@ -82,11 +87,17 @@ app.post('/admin', (req, res) => {
 	query = apiKeyQuery(userKey);
 	connection.query(query,
 		function (err, results, fields) {
+			let permissionValue = results[0]['permission'];
+
 			// check api key
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
 				console.log('bad API key, no update action')
 				// if key valid then run query
+			} else if(permissionValue < readWriteExecute){
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
 			} else {
 				connection.query(deleteQuery,
 					function (err, results, fields) {
@@ -188,12 +199,21 @@ app.post('/update_pole', (req, res) => {
 	connection.query(apiQuery,
 		function (err, results, fields) {
 			// validate API key
+			let permissionValue = results[0]['permission'];
+			console.log(`permission: ${permissionValue}, readWriteAPI: ${readWriteAPI}`)
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
 				console.log('bad API Key');
 				return;
-				// run query
-			} else if (tableName === 'pole') {
+			// check permissions
+			} else if(permissionValue < readWriteAPI){
+				checkApiPermissions(res, permissionValue, readWriteAPI)
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
+			// run query
+			} else if (tableName === 'pole' ) {
+				console.log(results);
 				let pole_stencil = req.body.table_value.pole_stencil
 				updateQuery = updateQueries[uniqueIdentifier];
 				updateQuery = updateQuery(tableValues[uniqueIdentifier], pole_stencil);
@@ -281,12 +301,17 @@ app.post('/update_drawing', (req, res) => {
 	apiQuery = apiKeyQuery(req.body.api_key);
 	connection.query(apiQuery,
 		function (err, results, fields) {
+			let permissionValue = results[0]['permission'];
 			// validate API key
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
 				console.log('bad API Key');
 				return;
 				// run query
+			} else if(permissionValue < readWriteAPI){
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
 			} else if (tableName === 'drawings') {
 				updateQuery = queries.updateDrawings;
 				updateQuery = updateQuery(
@@ -336,12 +361,17 @@ app.post('/update_line', (req, res) => {
 	apiQuery = apiKeyQuery(req.body.api_key);
 	connection.query(apiQuery,
 		function (err, results, fields) {
+			let permissionValue = results[0]['permission'];
 			// validate API key
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
 				console.log('bad API Key');
 				return;
 				// run query
+			} else if(permissionValue < readWriteAPI){
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
 			} else if (tableName === 'line') {
 				updateQuery = queries.updateLineTable;
 				updateQuery = updateQuery(
@@ -369,12 +399,17 @@ app.post('/insert', (req, res) => {
 
 	connection.query(apiQuery,
 		(err, results, fields) => {
+			let permissionValue = results[0]['permission'];
 			// validate API key
 			if (results.length == 0) {
 				res.status(400).send('Bad API Key');
 				console.log('bad API Key');
 				return;
 				// validate table value
+			} else if(permissionValue < readWriteAPI){
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
 			} else if (!(databaseTables.includes(table))) {
 				res.status(400).send(`Invalid Table ${table}`);
 				console.log(`Invalid Table ${table}`);
@@ -431,7 +466,7 @@ app.post('/insert', (req, res) => {
 				let drawingId = req.body.table_value.drawing_id;
 
 				connection.query(poleDrawingsQuery(poleId, drawingId),
-					(err, results, fields) =>{
+					(err, results, fields) => {
 						res.send('insert into pole_drawings table successful');
 					});
 

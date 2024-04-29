@@ -264,6 +264,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`api_key` (
   `api_key_id` INT NOT NULL AUTO_INCREMENT,
   `key_value` VARCHAR(150) NOT NULL,
   `VALID` TINYINT NOT NULL,
+  `permission` TINYINT NOT NULL,
   PRIMARY KEY (`api_key_id`),
   UNIQUE INDEX `api_key_id_UNIQUE` (`api_key_id` ASC) VISIBLE)
 ENGINE = InnoDB;

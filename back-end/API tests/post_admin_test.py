@@ -3,7 +3,7 @@ import requests
 url = 'http://localhost:3000/admin'
 data = {
     'query': 'CI 0/4',
-    'api_key': 'caphie7chai2yaengooghiv7OuThiepie4kah2ku',
+    'api_key': 'chi6xe6Ohj4ooDachohphu7choon8wieroNah3ho',
     'operation': 'delete'
 }
 

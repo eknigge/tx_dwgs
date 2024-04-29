@@ -204,7 +204,7 @@ tables | *string* | name of table, accepts : "pole", "pole_drawings", "line", an
 Code | Description 
 --- | --- |
 200 | OK
-400 | Invalid table name
+400 | Error. *Description to detail issue*
 
 ##### Pole Table 
 Name | Type | Description
@@ -369,7 +369,7 @@ operation | *string*| "delete" is the only operation implemented
 Code | Description 
 --- | --- |
 200 | Success
-400 | Bad API key
+400 | Error. *Description to detail issue*
 
 
 ### POST /

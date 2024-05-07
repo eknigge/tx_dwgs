@@ -18,6 +18,8 @@ let poleQuery = queries.poleQuery;
 let dwgQuery = queries.dwgQuery;
 let lineQuery = queries.lineQuery;
 let apiKeyQuery = queries.apiKeyQuery;
+let getSaltQuery = queries.userSalt;
+let getPassResetQuery = queries.passwordSet;
 let databaseTables = ["pole", "drawings", "line", "pole_drawings"]
 let allowedUniqueIdentifiers = {
 	'pole': ['pole_id'],
@@ -94,7 +96,7 @@ app.post('/admin', (req, res) => {
 				res.status(400).send('Bad API Key');
 				console.log('bad API key, no update action')
 				// if key valid then run query
-			} else if(permissionValue < readWriteExecute){
+			} else if (permissionValue < readWriteExecute) {
 				res.status(400).send('API Permission Error')
 				console.log(`API permission error, permission value ${permissionValue}`)
 				return;
@@ -205,14 +207,14 @@ app.post('/update_pole', (req, res) => {
 				res.status(400).send('Bad API Key');
 				console.log('bad API Key');
 				return;
-			// check permissions
-			} else if(permissionValue < readWriteAPI){
+				// check permissions
+			} else if (permissionValue < readWriteAPI) {
 				checkApiPermissions(res, permissionValue, readWriteAPI)
 				res.status(400).send('API Permission Error')
 				console.log(`API permission error, permission value ${permissionValue}`)
 				return;
-			// run query
-			} else if (tableName === 'pole' ) {
+				// run query
+			} else if (tableName === 'pole') {
 				console.log(results);
 				let pole_stencil = req.body.table_value.pole_stencil
 				updateQuery = updateQueries[uniqueIdentifier];
@@ -308,7 +310,7 @@ app.post('/update_drawing', (req, res) => {
 				console.log('bad API Key');
 				return;
 				// run query
-			} else if(permissionValue < readWriteAPI){
+			} else if (permissionValue < readWriteAPI) {
 				res.status(400).send('API Permission Error')
 				console.log(`API permission error, permission value ${permissionValue}`)
 				return;
@@ -368,7 +370,7 @@ app.post('/update_line', (req, res) => {
 				console.log('bad API Key');
 				return;
 				// run query
-			} else if(permissionValue < readWriteAPI){
+			} else if (permissionValue < readWriteAPI) {
 				res.status(400).send('API Permission Error')
 				console.log(`API permission error, permission value ${permissionValue}`)
 				return;
@@ -406,7 +408,7 @@ app.post('/insert', (req, res) => {
 				console.log('bad API Key');
 				return;
 				// validate table value
-			} else if(permissionValue < readWriteAPI){
+			} else if (permissionValue < readWriteAPI) {
 				res.status(400).send('API Permission Error')
 				console.log(`API permission error, permission value ${permissionValue}`)
 				return;
@@ -477,4 +479,70 @@ app.post('/insert', (req, res) => {
 				return;
 			}
 		})
+})
+
+function sha256(input) {
+	const crypto = require('crypto');
+
+	// Create a Sha-256 hash
+	const hash = crypto.createHash('sha256');
+
+	// Updating hash with input and encoding as base64
+	hash.update(input);
+	const hashedOutput = hash.digest('hex');
+
+	return hashedOutput;
+}
+
+
+// admin reset password function
+app.post('/adminPass', (req, res) => {
+
+	let userName = req.body.user_name;
+	let newPassword = req.body.password;
+	let userKey = req.body.api_key;
+	let saltQuery = getSaltQuery(userName);
+	let passResetQuery = getPassResetQuery(userName, newPassword);
+	let salt = undefined;
+	let hashedPassword = undefined
+
+	// validate api key
+	query = apiKeyQuery(userKey);
+	connection.query(query,
+		function (err, results, fields) {
+			let permissionValue = results[0]['permission'];
+
+			// check api key
+			if (results.length == 0) {
+				res.status(400).send('Bad API Key');
+				console.log('bad API key, no update action')
+				// if key valid then run query
+			} else if (permissionValue < readWriteExecute) {
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
+			} else {
+				connection.query(saltQuery,
+					function (err, results, fields) {
+						if (results[0] !== undefined) {
+							salt = results[0].pass_salt
+							hashedPassword = sha256(salt + newPassword);
+							passResetQuery = getPassResetQuery(userName, hashedPassword);
+							connection.query(passResetQuery, function (err, results, fields) {
+								res.send('password reset successful');
+							})
+						} else {
+							res.status(400).send('user not found');
+							console.log('user not found');
+						}
+					})
+			}
+		})
+
+	// console log event
+	console.log(passResetQuery);
+
+	// log event
+	updateLoggingTable(passResetQuery, userKey);
+
 })

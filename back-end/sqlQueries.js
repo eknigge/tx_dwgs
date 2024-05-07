@@ -246,10 +246,37 @@ const insertPoleDrawingsTable = (
 	); `
 }
 
+// AdminPass - get user salt
+const userSalt = (
+	userEmail
+) => {
+	return `
+	SELECT pass_salt from user
+	where user_email = "${userEmail}";
+	`
+}
+
+// AdminPass - password set
+const passwordSet = (
+	user_email,
+	password
+) => {
+	return `
+	UPDATE user
+	SET
+		pass = "${password}"
+	WHERE
+		user_id = ( SELECT * FROM (
+			SELECT user_id FROM user
+            WHERE user_email = "${user_email}"
+        ) AS TEMP);
+	`
+}
+
 module.exports = {
 	poleQuery, lineQuery, dwgQuery, apiKeyQuery, deletePole,
 	deleteDwg, deleteLine, addLogEvent, updateUserLogging, getPoleTable, getPoleDrawingsTable,
 	getLineTable, getDrawingsTable, updatePoleId, updateDrawings, updateLineTable,
 	insertPoleDrawingsTable, insertLineTable, insertDrawingsTable,
-	insertPoleTable
+	insertPoleTable, userSalt, passwordSet
 };

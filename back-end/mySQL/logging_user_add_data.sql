@@ -13,13 +13,16 @@ VALUES
     (3, 3);
 
 -- user table sample data
-INSERT INTO user (user_first_name, user_last_name, user_email)
+INSERT INTO user (user_first_name, user_last_name, user_email, pass_salt, pass)
 VALUES 
-	("Eric", "K", "erick@gmail.com"),
-    ("Zaya", "E", "ZayaE@gmail.com"),
-    ("Lucas", "K", "LucasK@gmail.com"),
-    ("Anon", "NA", "none");
-    
+	("Eric", "K", "erick@gmail.com", "oeru3yu8uoVuXah", "8de785f47d8dcb62f6193c58c7f7844ff13bf78f591eb17ff2ed46d96b7dae0a"), -- pass = "TooTaix6vothei3una7d"
+    ("Zaya", "E", "ZayaE@gmail.com", "re5eeF6aoshoogh", "69eeb344953c92a00d5688780ead58cf7e6e74b9a8f0ad6a024eeefee3b77156"), -- pass = "eepoum7ohCoh6Eiteubi"
+    ("Lucas", "K", "LucasK@gmail.com", "woh7ieg1Loothae", "0a3d47499ed3654fadcf9a98bf3b12a1f41458e276d2c0444b7b058ca76c7e6d"), -- pass = "Eix0eig7Rohrai4eNg0u"
+    ("New_User", "NA", "none", "bafo5yuetaa1Ana", "97faa5292cd816e109528c3a30d4bb699c5cf91398254240bf72cf52e67d1acc"); -- pass = "baiWahs6vahsien5Be0a"
+/*
+	password is a sha-256 hash for pass_salt + the password the user has entered. Plain text passwords are never stored
+*/
+
 -- api key sample data
 INSERT INTO api_key (key_value, valid, permission)
 VALUES 

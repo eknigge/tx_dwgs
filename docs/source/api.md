@@ -371,6 +371,32 @@ Code | Description
 200 | Success
 400 | Error. *Description to detail issue*
 
+### POST /adminPass
+Allows users with admin-level access to reset user passwords.
+```
+POST http://localhost:3000/adminPass
+```
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string*| valid api key
+user_name | *string*| e-mail address of user
+password | *string*| new password, limit 45 characters
+
+```
+{
+	"api_key": "string",
+	"user_name": "string",
+	"password": "string"
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | Success
+400 | Error. *Description to detail issue*
+
 
 ### POST /
 ```

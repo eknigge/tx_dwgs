@@ -192,15 +192,18 @@ VALUES (
     (55)
 );
 
--- test queries for INSERT 
-select * from pole_drawings order by pole_drawings_id desc limit 20;
-select * from pole order by pole_id desc limit 10;
-select * from drawings order by drawing_id desc limit 10;
-select * from line order by line_id desc limit 10;
+-- admin reset password, get salt
+select pass_salt from user
+where user_email = "erick@gmail.com";
 
-select * from logging;
-
-SELECT valid, permission FROM api_key
-JOIN user_api_key on api_key.api_key_id = user_api_key.api_key_id
-JOIN user ON user.user_id = user_api_key.user_id
-WHERE key_value = "phaepiesahgh1kahng2gookoh1xahpahHeo8Geij"; 
+-- admin reset password, write password to databse
+UPDATE user
+	SET
+		pass = "test_pass_value"
+	WHERE
+		user_id = ( SELECT * FROM (
+			SELECT user_id FROM user
+            WHERE user_email = "erick@gmail.com"
+        ) AS TEMP);
+        
+select * from user;

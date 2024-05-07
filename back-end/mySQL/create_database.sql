@@ -230,6 +230,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `user_first_name` VARCHAR(45) NOT NULL,
   `user_last_name` VARCHAR(45) NOT NULL,
   `user_email` VARCHAR(45) NOT NULL,
+  `pass` VARCHAR(70) NOT NULL,
+  `pass_salt` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE)
 ENGINE = InnoDB;

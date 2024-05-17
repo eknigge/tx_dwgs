@@ -207,3 +207,30 @@ UPDATE user
         ) AS TEMP);
         
 select * from user;
+
+/*
+ Admin add new user process
+*/
+
+-- add values to user table
+INSERT INTO user (user_first_name, user_last_name, user_email, pass_salt, pass)
+VALUES ("Test_User", "Last_Name", "user@mail.com", "salt_value", "hashed_password");
+
+-- add values to api_key table
+INSERT INTO api_key (key_value, valid, permission)
+VALUES ("40_digit_api_key", 1, 6);
+
+-- add values to user_api_key table
+INSERT INTO user_api_key (user_id, api_key_id)
+VALUES (
+	(SELECT MAX(user_id) FROM user), 
+    (SELECT MAX(api_key_id) FROM api_key)    
+);
+
+select * from user;
+select * from user_api_key;
+select * from api_key;
+
+
+
+

@@ -398,6 +398,40 @@ Code | Description
 400 | Error. *Description to detail issue*
 
 
+### POST /adminNewUser
+This is the endpoint for adding a new user to the system. It returns an API key that the user can use.
+
+```
+POST http://localhost:3000/adminNewUser
+```
+
+#### Body
+Name | Type | Description
+--- | --- | --- |
+api_key | *string*| valid api key
+first_name | *string* | user's first name
+last_name | *string* | user's last name
+user_email | *string* | user's e-mail 
+password | *string* | user password
+permission | *int* | unix permissions value, between 4-7. cumulative of read (4), write(2), execute (1)
+
+```
+{
+	"api_key": "string",
+	"first_name": "string",
+	"last_name": "string",
+	"user_email": "string",
+	"password": "string ",
+	"permission": "string "
+}
+```
+
+#### Response
+Code | Description 
+--- | --- |
+200 | *API Key*. String of API Key. 
+400 | Error. *Description to detail issue*
+
 ### POST /
 ```
 POST http://localhost:3000/

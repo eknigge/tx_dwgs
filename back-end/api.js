@@ -8,8 +8,11 @@ const queries = require('./sqlQueries');
 const cors = require('cors')
 app.use(cors())
 
+// constants
+let saltLength = 15;
+let ApiKeyLength = 40;
+
 // permission values - based on unix standard
-let readAPI = 4;
 let readWriteAPI = 6;
 let readWriteExecute = 7;
 
@@ -20,6 +23,9 @@ let lineQuery = queries.lineQuery;
 let apiKeyQuery = queries.apiKeyQuery;
 let getSaltQuery = queries.userSalt;
 let getPassResetQuery = queries.passwordSet;
+let addNewUserQuery = queries.adminNewUserAddUserData;
+let addDataApiTableQuery = queries.adminNewUserAddApiTable;
+let linkUserApiTableQUery = queries.adminNewUserUserApiKeyTable;
 let databaseTables = ["pole", "drawings", "line", "pole_drawings"]
 let allowedUniqueIdentifiers = {
 	'pole': ['pole_id'],
@@ -546,3 +552,77 @@ app.post('/adminPass', (req, res) => {
 	updateLoggingTable(passResetQuery, userKey);
 
 })
+
+
+// admin add user
+app.post('/adminNewUser', (req, res) =>{
+	// constants
+	let userKey = req.body.api_key;
+	let newUserKey = generateRandomString(ApiKeyLength);
+	let firstName = req.body.first_name;
+	let lastName = req.body.last_name;
+	let userEmail = req.body.user_email;
+	let userSalt = generateRandomString(saltLength);
+	let hashedPassword = sha256(userSalt + req.body.password);
+	let permissionValue = req.body.permission
+
+	// queries
+	let addUserQuery = addNewUserQuery(firstName, lastName, userEmail, userSalt, hashedPassword);
+	let ApiTableQuery = addDataApiTableQuery(newUserKey, permissionValue);
+	let linkTableQuery = linkUserApiTableQUery();
+
+	// validate api key
+	query = apiKeyQuery(userKey);
+	connection.query(query,
+		function (err, results, fields) {
+			let permissionValue = results[0]['permission'];
+
+			// check api key
+			if (results.length == 0) {
+				res.status(400).send('Bad API Key');
+				console.log('bad API key, no update action')
+				// if key valid then run query
+			} else if (permissionValue < readWriteExecute) {
+				res.status(400).send('API Permission Error')
+				console.log(`API permission error, permission value ${permissionValue}`)
+				return;
+			} else {
+				// add values to user table
+				connection.query(addUserQuery,
+					function (err, results, fields) {
+						console.log('add user complete');
+					})
+
+				// add values to api_key table
+				connection.query(ApiTableQuery,
+					function (err, results, fields) {
+						console.log('api table updated');
+					})
+
+				// add values to user_api_key table
+				connection.query(linkTableQuery,
+					function (err, results, fields) {
+						console.log('link table query updated');
+					})
+				
+			}
+		})
+
+	// console log event
+	console.log(addUserQuery);
+
+	// log event
+	updateLoggingTable(addUserQuery, userKey);
+
+	// return API key
+	res.status(200).send(`API Key: ${newUserKey}`);
+})
+
+function generateRandomString(length) {
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let randomString = '';
+	for (let i = 0; i < length; i++) {
+	  randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return randomString;
+}

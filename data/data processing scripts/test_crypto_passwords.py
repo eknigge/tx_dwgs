@@ -11,7 +11,7 @@ def sha256_hash(input_str):
 
 
 # Example usage
-input_data = "oeru3yu8uoVuXah"
-input_data += "new_password"
+input_data = "qmGVSigT71yS4IH"
+input_data += "new_user_password"
 hashed_result = sha256_hash(input_data)
 print(hashed_result)

@@ -11,7 +11,7 @@ Installation instructions are provided for Windows, but may work in other enviro
 - MySQL Server 8+
 
 ## Sphinx Documentation
-Unfortunately, the documentation for this project is not pre-compiled. This is done to save space and reduce clutter. Creating a local working copy is not difficult. Simply follow the scripts below to generate the build files, and then open the `index` file in your web browser to access the project documentation. A brief summary can be found in the `readme.md` file of the repository, but it is much more limited in scope compared to the full documentation.
+The documentation for this project is not pre-compiled. This is done to save space and reduce clutter. Creating a local working copy is not difficult. Simply follow the scripts below to generate the build files, and then open the `index` file in your web browser to access the project documentation. A brief summary can be found in the `readme.md` file of the repository, but it is much more limited in scope compared to the full documentation.
 
 To execute a `sphinx-build` you must install sphinx, the MyST extension, and the sphinx book theme. 
 
